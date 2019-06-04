@@ -1,7 +1,9 @@
 from pm4py.algo.filtering.common import filtering_constants
 from pm4py.objects.log.log import EventLog
-from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY
-from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY
+from pm4py.objects.log.util.xes import DEFAULT_NAME_KEY, DEFAULT_TIMESTAMP_KEY
+from pm4py.util.constants import PARAMETER_CONSTANT_ACTIVITY_KEY, PARAMETER_CONSTANT_TIMESTAMP_KEY
+
+import numpy as np
 
 
 def apply(log, admitted_variants, parameters=None):
@@ -32,6 +34,45 @@ def apply(log, admitted_variants, parameters=None):
     return log
 
 
+def filter_by_variants_percentage(log, percentage=0.8, parameters=None):
+    """
+    Filters a log by variants percentage
+
+    Parameters
+    -------------
+    log
+        Event log
+    percentage
+        Percentage
+    parameters
+        Parameters of the algorithm
+
+    Returns
+    -------------
+    filtered_log
+        Filtered log (by variants percentage)
+    """
+    if parameters is None:
+        parameters = {}
+
+    variants = get_variants(log, parameters=parameters)
+    var_with_count = sorted([(x, len(y)) for x, y in variants.items()])
+
+    total_sum = sum(x[1] for x in var_with_count)
+    partial_sum = 0
+
+    variants_to_filter = []
+
+    for i in range(len(var_with_count)):
+        partial_sum = partial_sum + var_with_count[i][1]
+        variants_to_filter.append(var_with_count[i][0])
+
+        if partial_sum >= total_sum * percentage and (i == len(var_with_count)-1 or (i < len(var_with_count)-1 and var_with_count[i+1][1] < var_with_count[i][1])):
+            break
+
+    return apply(log, variants_to_filter, parameters=parameters)
+
+
 def get_variants(log, parameters=None):
     """
     Gets a dictionary whose key is the variant and as value there
@@ -53,7 +94,47 @@ def get_variants(log, parameters=None):
 
     variants_trace_idx = get_variants_from_log_trace_idx(log, parameters=parameters)
 
-    return convert_variants_trace_idx_to_trace_obj(log, variants_trace_idx)
+    all_var = convert_variants_trace_idx_to_trace_obj(log, variants_trace_idx)
+
+    return all_var
+
+
+def get_variants_along_with_case_durations(log, parameters=None):
+    """
+    Gets a dictionary whose key is the variant and as value there
+    is the list of traces that share the variant
+
+    Parameters
+    ----------
+    log
+        Trace log
+    parameters
+        Parameters of the algorithm, including:
+            activity_key -> Attribute identifying the activity in the log
+
+    Returns
+    ----------
+    variant
+        Dictionary with variant as the key and the list of traces as the value
+    """
+    if parameters is None:
+        parameters = {}
+
+    timestamp_key = parameters[
+        PARAMETER_CONSTANT_TIMESTAMP_KEY] if PARAMETER_CONSTANT_TIMESTAMP_KEY in parameters else DEFAULT_TIMESTAMP_KEY
+
+    variants_trace_idx = get_variants_from_log_trace_idx(log, parameters=parameters)
+    all_var = convert_variants_trace_idx_to_trace_obj(log, variants_trace_idx)
+
+    all_durations = {}
+
+    for var in all_var:
+        all_durations[var] = []
+        for trace in all_var[var]:
+            all_durations[var].append((trace[-1][timestamp_key] - trace[0][timestamp_key]).total_seconds())
+        all_durations[var] = np.array(all_durations[var])
+
+    return all_var, all_durations
 
 
 def get_variants_from_log_trace_idx(log, parameters=None):
