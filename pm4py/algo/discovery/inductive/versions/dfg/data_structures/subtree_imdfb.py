@@ -14,6 +14,8 @@ from pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfa i
 
 class SubtreeB(Subtree):
     def get_connected_components(self, ingoing, outgoing, activities):
+
+        """Question: is the set like a potenzmenge, i.e. if ABC can AB and BC and for example also be part?"""
         """
         Get connected components in the DFG graph
 
@@ -29,6 +31,9 @@ class SubtreeB(Subtree):
         activities_considered = set()
 
         connected_components = []
+
+
+        """Question, if activity A is in ingoing and outgoing, is ingoing[act] not the same as outgoing[act]? Does this not refer to the same A?"""
 
         for act in ingoing:
             ingoing_act = set(ingoing[act].keys())
@@ -156,7 +161,7 @@ class SubtreeB(Subtree):
             sthing_changed = False
             i = 0
             while i < len(conn_components):
-                ok_comp_idx = []
+                ok_comp_idx = []        #Question: What does ok mean in this context?
                 partly_ok_comp_idx = []
                 not_ok_comp_idx = []
                 conn1 = conn_components[i]

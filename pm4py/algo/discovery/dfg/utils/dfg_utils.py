@@ -598,6 +598,7 @@ def get_connected_components(ingoing, outgoing, activities, force_insert_missing
         if not something_changed:
             break
 
+    """Question: Why is this not included in subtree_imdfb?"""
     if len(connected_components) == 0:
         for activity in activities:
             connected_components.append([activity])
