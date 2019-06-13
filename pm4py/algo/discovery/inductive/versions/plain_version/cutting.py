@@ -1,5 +1,21 @@
 
 from pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfa import Subtree
+from pm4py import util as pmutil
+
+
+
+def create_dfg(log, parameters = None)
+
+    if parameters is None:
+        parameters = {}
+    if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
+        parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
+
+    activity_key = pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY
+    follow_relation = map((lambda t: [(t[i - 1][activity_key], t[i][activity_key]) for i in range(1, len(t))]), log) #iterate on log, safe all df-pairs in map
+    dfg = (list(follow_relation))    #f is now a list with all the dfg-tuples in it
+
+    return dfg
 
 
 def get_connected_components(self, ingoing, outgoing, activities):
@@ -79,6 +95,17 @@ def get_connected_components(self, ingoing, outgoing, activities):
 
 
 def merge_components():
+
+
+def is_followed_by(self, activityA, activityB):
+    """
+    check if Activity A is followed by Activity B in the dfg of self, returns bool.
+    """
+    f = create_dfg(self.log)
+    if (activityA, activityB) in f:
+        return True
+
+    return False
 
 
 def detect_xor(self, conn_components, this_nx_graph, strongly_connected_components):
@@ -166,22 +193,28 @@ def detect_sequence(self, conn_components, this_nx_graph, strongly_connected_com
             return [True, ret_connected_components]
     return [False, [], []]
 
-def is_followed_by(self, A, B)
+def is_followed_by(self, activityA, activityB):
     """
     check if Activity A is followed by Activity B in the dfg of self, returns bool.
     """
+    f = create_dfg(self.log)
+    if (activityA, activityB) in f:
+        return True
 
+    return False
 
 
 def detect_concurrent(self):
-    st
+
     for  a in self.activities:
         for  b in self.activities:
             if a != b:
-                for
+                if is_followed_by(self, a, b) and is_followed_by(self, b, a)
+
 
 
 def detect_loop():
 
 
-def detect_cut():
+def detect_cut(log, second_iteration):
+

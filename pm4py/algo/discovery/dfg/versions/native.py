@@ -32,4 +32,5 @@ def apply(log, parameters=None):
     window = parameters[WINDOW] if WINDOW in parameters else DEFAULT_WINDOW
     activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
     dfgs = map((lambda t: [(t[i - window][activity_key], t[i][activity_key]) for i in range(window, len(t))]), log)
+
     return Counter([dfg for lista in dfgs for dfg in lista])
