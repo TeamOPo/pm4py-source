@@ -1,7 +1,6 @@
-
 from pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfa import Subtree
 from pm4py import util as pmutil
-
+from pm4py.algo.discovery.dfg.utils.dfg_utils import get_ingoing_edges, get_outgoing_edges
 
 
 def create_dfg(log, parameters = None)
@@ -37,7 +36,6 @@ def get_connected_components(self, ingoing, outgoing, activities):
     connected_components = []
 
     """Question, if activity A is in ingoing and outgoing, is ingoing[act] not the same as outgoing[act]? Does this not refer to the same A?"""
-
     for act in ingoing:
         ingoing_act = set(ingoing[act].keys())
         if act in outgoing:
@@ -193,28 +191,35 @@ def detect_sequence(self, conn_components, this_nx_graph, strongly_connected_com
             return [True, ret_connected_components]
     return [False, [], []]
 
-def is_followed_by(self, activityA, activityB):
+def is_followed_by(dfg, activity_a, activity_b):
     """
     check if Activity A is followed by Activity B in the dfg of self, returns bool.
     """
-    f = create_dfg(self.log)
-    if (activityA, activityB) in f:
-        return True
+    for i in range(0, len(dfg)):
+        if (activity_a, activity_b) == dfg[i][0]:
+            return True
 
     return False
 
 
 def detect_concurrent(self):
-
+    inverted_dfg = []
     for  a in self.activities:
         for  b in self.activities:
             if a != b:
-                if is_followed_by(self, a, b) and is_followed_by(self, b, a)
+                if not(is_followed_by(self.dfg, a, b) and is_followed_by(self.dfg, b, a)):
+                    if (a, b) not in inverted_dfg:
+                        inverted_dfg.append((a, b), 1)
 
-
+    self.inverted_dfg = inverted_dfg
+    new_ingoing = get_ingoing_edges(inverted_dfg)
+    new_outgoing = get_ingoing_edges(inverted_dfg)
+    conn = get_connected_components(new_ingoing, new_outgoing, self.activities)
+    print(conn)
 
 def detect_loop():
 
 
-def detect_cut(log, second_iteration):
+def detect_cut(self):
+    return detect_concurrent(self)
 

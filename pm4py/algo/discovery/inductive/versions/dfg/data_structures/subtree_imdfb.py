@@ -10,6 +10,7 @@ from pm4py.algo.discovery.dfg.utils.dfg_utils import infer_end_activities_from_s
 from pm4py.algo.discovery.dfg.utils.dfg_utils import infer_start_activities
 from pm4py.algo.discovery.dfg.utils.dfg_utils import infer_start_activities_from_prev_connections_and_current_dfg
 from pm4py.algo.discovery.inductive.versions.dfg.data_structures.subtree_imdfa import Subtree
+from pm4py.algo.discovery.dfg.utils.dfg_utils import get_ingoing_edges, get_outgoing_edges
 
 
 class SubtreeB(Subtree):
@@ -31,7 +32,6 @@ class SubtreeB(Subtree):
         activities_considered = set()
 
         connected_components = []
-
 
         """Question, if activity A is in ingoing and outgoing, is ingoing[act] not the same as outgoing[act]? Does this not refer to the same A?"""
 

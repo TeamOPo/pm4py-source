@@ -9,8 +9,7 @@ from pm4py.algo.filtering.dfg.dfg_filtering import clean_dfg_based_on_noise_thre
 from pm4py.algo.discovery.inductive.versions.plain_version import cutting
 
 
-class Subtree_plain(object):
-
+class SubtreePlain(object):
     def __init__(self, log, dfg, master_dfg, initial_dfg, activities, counts, rec_depth, noise_threshold=0,
                  start_activities=None, end_activities=None, initial_start_activities=None,
                  initial_end_activities=None):
@@ -68,8 +67,17 @@ class Subtree_plain(object):
         self.children = None
         self.must_insert_skip = False
         self.log = log
+        self.inverted_dfg = None
 
         self.initialize_tree(dfg, log, initial_dfg, activities)
+
+    def make_tree(self, log, dfg, dfg, dfg, activities, c, 0, noise_threshold, start_activities,
+                       end_activities, start_activities, end_activities):
+
+        tree= SubtreePlain(log, dfg, dfg, dfg, activities, c, 0, noise_threshold, start_activities,
+                       end_activities, start_activities, end_activities)
+
+        return tree
 
     def initialize_tree(self, log, dfg, initial_dfg, activities, second_iteration=False):
         """
@@ -115,5 +123,4 @@ class Subtree_plain(object):
         self.negated_ingoing = get_ingoing_edges(self.negated_dfg)
         self.detected_cut = None
         self.children = []
-
-        self.detect_cut(log, second_iteration=second_iteration)
+        self.detect_cut(self, second_iteration=second_iteration)
