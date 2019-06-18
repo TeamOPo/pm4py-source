@@ -124,10 +124,10 @@ def apply_tree(log, parameters):
         pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
 
 
-    print(dfg)
-    print(type(dfg))
-    print(type(dfg[0]))
-    print(type(dfg[0][0]))
+    #print(dfg)
+    #print(type(dfg))
+    #print(type(dfg[0]))
+    #print(type(dfg[0][0]))
 
     # gets the start activities from the log
     start_activities = start_activities_filter.get_start_activities(log, parameters=parameters)
