@@ -161,7 +161,7 @@ class SubtreeB(Subtree):
             sthing_changed = False
             i = 0
             while i < len(conn_components):
-                ok_comp_idx = []        #Question: What does ok mean in this context?
+                ok_comp_idx = []  # Question: What does ok mean in this context?
                 partly_ok_comp_idx = []
                 not_ok_comp_idx = []
                 conn1 = conn_components[i]
@@ -377,15 +377,15 @@ class SubtreeB(Subtree):
         if len(conn_components) > 1:
             conn_components = self.check_par_cut(conn_components, this_nx_graph, strongly_connected_components)
             if conn_components is not None:
-                #print("\n", conn_components, self.initial_dfg)
+                # print("\n", conn_components, self.initial_dfg)
                 for comp in conn_components:
                     # print(self.rec_depth, comp)
                     comp_ok = False
                     for el in self.initial_dfg:
-                        #print(el[0][0], comp, el[0][0] in comp)
-                        #print(el[0][1], self.activities, el[0][1] not in self.activities)
-                        #print(el[0][1], comp, el[0][1] in comp)
-                        #print(el[0][0], self.activities, el[0][0] not in self.activities)
+                        # print(el[0][0], comp, el[0][0] in comp)
+                        # print(el[0][1], self.activities, el[0][1] not in self.activities)
+                        # print(el[0][1], comp, el[0][1] in comp)
+                        # print(el[0][0], self.activities, el[0][0] not in self.activities)
                         if (el[0][0] in comp and el[0][1] not in self.activities) or (
                                 el[0][1] in comp and el[0][0] not in self.activities):
                             comp_ok = True
@@ -394,7 +394,7 @@ class SubtreeB(Subtree):
                         for sa in self.start_activities:
                             if sa in comp:
                                 comp_ok = True
-                                #print("siii")
+                                # print("siii")
                                 break
                     if not comp_ok:
                         return [False, conn_components]
@@ -513,13 +513,45 @@ class SubtreeB(Subtree):
         """
         Detect generally a cut in the graph (applying all the algorithms)
         """
+
+        p0 = list()
+        # write all start and end activites in p1
+        p1 = list()
+        if type(self.start_activities) is dict:
+            p1 = list(self.start_activities)
+            p1 = p1 + (list(self.end_activities.keys()))
+        else:
+            p1.append(self.start_activities)
+            p1.append(self.end_activities)
+#       p1 = set(p1)
+        p0.append(p1)
+        # make maximal partition of set of activities so that no set in the partition has an edge to another set of
+        # the partition
+        activities_considered = list()
+        activities_considered.append(p1)
+        # create new dfg without the transitions to start and end activities
+        dfg = self.dfg
+        for act in p1:
+            for element in dfg:
+                if element[0][0] == act or element[0][1] == act:
+                    dfg.remove(element)
+
+        new_ingoing = get_ingoing_edges(dfg)
+        new_outgoing = get_outgoing_edges(dfg)
+        conn = self.get_connected_components(new_ingoing, new_outgoing, self.activities)
+        print(p1)
+        print(conn)
+        print(type(conn), type(conn[0]))
+
+
+
+
+        # p rint(get_all_activities_connected_as_output_to_activity(self.dfg))
         if self.dfg:
             # print("\n\n")
             conn_components = self.get_connected_components(self.ingoing, self.outgoing, self.activities)
             this_nx_graph = self.transform_dfg_to_directed_nx_graph()
             strongly_connected_components = [list(x) for x in nx.strongly_connected_components(this_nx_graph)]
-
-            # print("strongly_connected_components", strongly_connected_components)
 
             conc_cut = self.detect_concurrent_cut(conn_components, this_nx_graph, strongly_connected_components)
 

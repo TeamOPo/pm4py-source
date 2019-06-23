@@ -2,7 +2,6 @@ from pm4py import util as pmutil
 from pm4py.algo.discovery.inductive.util import shared_constants
 from pm4py.algo.discovery.inductive.util.petri_el_count import Counts
 from pm4py.algo.discovery.inductive.versions.dfg.util import get_tree_repr_imdfb
-from pm4py.algo.discovery.inductive.versions.plain_version.cutting import create_dfg
 from pm4py.algo.discovery.inductive.versions.plain_version.data_structures import subtree_plain as subtree
 from pm4py.algo.filtering.log.attributes import attributes_filter
 from pm4py.algo.filtering.log.end_activities import end_activities_filter
@@ -12,7 +11,7 @@ from pm4py.objects.log.util import xes as xes_util
 
 def apply_im_plain(log):
 
-    dfg = create_dfg(log)
+    dfg = subtree.create_dfg(log)
     c = Counts()
     noise_threshold = shared_constants.NOISE_THRESHOLD
     activity_key = xes_util.DEFAULT_NAME_KEY
