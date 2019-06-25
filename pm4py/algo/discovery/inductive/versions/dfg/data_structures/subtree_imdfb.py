@@ -514,39 +514,9 @@ class SubtreeB(Subtree):
         Detect generally a cut in the graph (applying all the algorithms)
         """
 
-        p0 = list()
-        # write all start and end activites in p1
-        p1 = list()
-        if type(self.start_activities) is dict:
-            p1 = list(self.start_activities)
-            p1 = p1 + (list(self.end_activities.keys()))
-        else:
-            p1.append(self.start_activities)
-            p1.append(self.end_activities)
-#       p1 = set(p1)
-        p0.append(p1)
-        # make maximal partition of set of activities so that no set in the partition has an edge to another set of
-        # the partition
-        activities_considered = list()
-        activities_considered.append(p1)
-        # create new dfg without the transitions to start and end activities
-        dfg = self.dfg
-        for act in p1:
-            for element in dfg:
-                if element[0][0] == act or element[0][1] == act:
-                    dfg.remove(element)
-
-        new_ingoing = get_ingoing_edges(dfg)
-        new_outgoing = get_outgoing_edges(dfg)
-        conn = self.get_connected_components(new_ingoing, new_outgoing, self.activities)
-        print(p1)
-        print(conn)
         print(type(conn), type(conn[0]))
 
 
-
-
-        # p rint(get_all_activities_connected_as_output_to_activity(self.dfg))
         if self.dfg:
             # print("\n\n")
             conn_components = self.get_connected_components(self.ingoing, self.outgoing, self.activities)
@@ -556,6 +526,7 @@ class SubtreeB(Subtree):
             conc_cut = self.detect_concurrent_cut(conn_components, this_nx_graph, strongly_connected_components)
 
             if conc_cut[0]:
+                print("conc", type(conc_cut))
                 # print(self.rec_depth, "conc_cut", self.activities)
                 for comp in conc_cut[1]:
                     new_dfg = filter_dfg_on_act(self.dfg, comp)

@@ -8,14 +8,27 @@ from pm4py.algo.discovery.inductive.versions.dfg.data_structures import subtree_
 from pm4py.objects.conversion.log import factory as conv_factory
 from pm4py.algo.discovery.dfg import factory as dfg_factory
 from pm4py.visualization.dfg import factory as dfg_vis_factory
-#from pm4py.algo.discovery.inductive.versions.plain_version import im_plain as imp
+from pm4py.algo.discovery.inductive.versions.plain_version import im_plain as imp
 
 
 
 #log = xes_importer.apply(os.path.join("tests", "compressed_input_data", "04_reviewing.xes.gz"))
 stream_big = csv_importer.import_event_stream(os.path.join("tests", "compressed_input_data", "04_reviewing.xes.gz"))
+
+stream_loop = csv_importer.import_event_stream(os.path.join("tests", "input_data", "test-loop_cut.csv"))
+log_loop = conv_factory.apply(stream_loop)
+tree_loop = imp.apply_im_plain(log_loop)
+gviz = pt_vis_factory.apply(tree_loop)
+pt_vis_factory.view(tree_loop)
+
+
+#sub = imp.apply_im_plain(log)
+#gviz = pt_vis_factory.apply(sub)
+#pt_vis_factory.view(gviz)
+
+
+
 stream = csv_importer.import_event_stream(os.path.join("tests", "input_data", "test-parallel_cut.csv"))
-#print(type(stream), flush=True)
 log = conv_factory.apply(stream)
 tree = inductive_miner.apply_tree(log)
 #gviz = pt_vis_factory.apply(tree)
@@ -27,6 +40,6 @@ dfg = dfg_factory.apply(log)
 #gviz = dfg_vis_factory.apply(dfg, log=log, variant="frequency")
 #dfg_vis_factory.view(gviz)
 
-#sub = imp.apply_im_plain(log)
-#gviz = pt_vis_factory.apply(sub)
-#pt_vis_factory.view(gviz)
+
+
+
