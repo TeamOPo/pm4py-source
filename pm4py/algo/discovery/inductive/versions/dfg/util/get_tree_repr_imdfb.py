@@ -76,12 +76,15 @@ def get_repr(spec_tree_struct, rec_depth, contains_empty_traces=False):
         child_tree.parent = final_tree_repr
         child_tree_redo.parent = final_tree_repr
         child_tree_exit.parent = final_tree_repr
+    # TODO why do this, when in line 101 we change final_tree_repr anyways
     elif spec_tree_struct.detected_cut == "base_concurrent":
         if len(spec_tree_struct.activities) > 1 or spec_tree_struct.must_insert_skip:
             final_tree_repr = ProcessTree(operator=Operator.XOR)
             child_tree = final_tree_repr
         else:
+            # write an empty transition in final_tree_repr
             final_tree_repr = ProcessTree(operator=None, label=None)
+    # if a cut is found, set operator to the Type of Cut:
     elif spec_tree_struct.detected_cut == "sequential":
         final_tree_repr = ProcessTree(operator=Operator.SEQUENCE)
         child_tree = final_tree_repr
@@ -98,15 +101,18 @@ def get_repr(spec_tree_struct, rec_depth, contains_empty_traces=False):
     if spec_tree_struct.detected_cut == "base_concurrent" or spec_tree_struct.detected_cut == "flower":
         for act in spec_tree_struct.activities:
             if child_tree is None:
-                new_vis_trans = get_transition(act)
+                # create a leaf of a processTree containing activity act
+                new_vis_trans = get_transition(act)     # new_vis is a ProcessTree object
+                # TODO: for what do we need child_tree?
                 child_tree = new_vis_trans
                 final_tree_repr = child_tree
             else:
                 new_vis_trans = get_transition(act)
                 child_tree.children.append(new_vis_trans)
                 new_vis_trans.parent = child_tree
+
     if spec_tree_struct.detected_cut == "sequential" or spec_tree_struct.detected_cut == "loopCut":
-        #if spec_tree_struct.detected_cut == "loopCut":
+        # if spec_tree_struct.detected_cut == "loopCut":
         #    spec_tree_struct.children[0].must_insert_skip = True
         for ch in spec_tree_struct.children:
             child = get_repr(ch, rec_depth + 1)
@@ -119,18 +125,15 @@ def get_repr(spec_tree_struct, rec_depth, contains_empty_traces=False):
                 child.parent = child_tree
                 spec_tree_struct.children.append(None)
 
-    if spec_tree_struct.detected_cut == "parallel":
+    if spec_tree_struct.detected_cut == "parallel" or spec_tree_struct.detected_cut == "concurrent":
+        #TODO can this for-loop not be merged with the one above?
         for child in spec_tree_struct.children:
+            # get the representation of the current child (from children in the subtree-structure):
             child_final = get_repr(child, rec_depth + 1)
+            # add connection from child_tree to child_final and the other way around:
             child_tree.children.append(child_final)
             child_final.parent = child_tree
-
-    if spec_tree_struct.detected_cut == "concurrent":
-        for child in spec_tree_struct.children:
-            child_final = get_repr(child, rec_depth + 1)
-            child_tree.children.append(child_final)
-            child_final.parent = child_tree
-
+    # TODO: how does a skip in the process tree look?
     if spec_tree_struct.must_insert_skip:
         skip = get_new_hidden_trans()
         if spec_tree_struct.detected_cut == "base_concurrent":
@@ -145,7 +148,7 @@ def get_repr(spec_tree_struct, rec_depth, contains_empty_traces=False):
             skip.parent = master_tree_repr
 
             return master_tree_repr
-
+    # TODO: instead of only checking the base case of empty_traces, should I use new values for the detected_cut?
     if contains_empty_traces and rec_depth == 1:
         master_tree_repr = ProcessTree(operator=Operator.XOR)
         master_tree_repr.children.append(final_tree_repr)

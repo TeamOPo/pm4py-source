@@ -664,13 +664,8 @@ def get_all_activities_connected_as_output_to_activity(dfg, activity):
     all_activities = set()
 
     for el in dfg:
-        print("el: ", el)
         if el[0][0] == activity:
-            print("el00: ", el[0][0])
             all_activities.add(el[0][1])
-            print("el01: ", el[0][1])
-
-    print(all_activities)
     return all_activities
 
 

@@ -1,24 +1,25 @@
 from copy import copy
 import networkx as nx
-from pm4py import util as pmutil
+from pm4py.objects.log.util import xes as xes_util
 from pm4py.algo.discovery.dfg.utils.dfg_utils import get_activities_from_dfg, \
     get_connected_components, infer_start_activities, infer_end_activities
 from pm4py.algo.discovery.dfg.utils.dfg_utils import get_ingoing_edges, get_outgoing_edges
 from pm4py.algo.discovery.dfg.utils.dfg_utils import negate, get_activities_self_loop
 from pm4py.algo.discovery.dfg.versions import native as dfg_inst
 from pm4py.algo.filtering.dfg.dfg_filtering import clean_dfg_based_on_noise_thresh
-from pm4py.objects.log.util import xes as xes_util
-from pm4py.algo.discovery.inductive.versions.plain_version import splitting as split
-
+from pm4py.algo.discovery.inductive.versions.plain_version import base_case, fall_through
 from pm4py import util as pmutil
+
+from pm4py.algo.discovery.inductive.versions.plain_version import splitting as split
 from pm4py.algo.discovery.inductive.util import shared_constants
 from pm4py.algo.discovery.inductive.util.petri_el_count import Counts
 from pm4py.algo.discovery.inductive.versions.dfg.util import get_tree_repr_imdfb
-from pm4py.algo.discovery.inductive.versions.plain_version.data_structures import subtree_plain as subtree
-from pm4py.algo.filtering.log.attributes import attributes_filter
 from pm4py.algo.filtering.log.end_activities import end_activities_filter
 from pm4py.algo.filtering.log.start_activities import start_activities_filter
-from pm4py.objects.log.util import xes as xes_util
+from pm4py.algo.filtering.log.attributes import attributes_filter
+
+
+
 
 
 class SubtreePlain(object):
@@ -367,7 +368,7 @@ class SubtreePlain(object):
                             p0.remove(element)              # remove subsets that are connected from a start activity
 
         iterable_dfg = list()
-        for i in range[0, self.dfg.length()]:
+        for i in range(0, self.dfg.length()):
             iterable_dfg.append(self.dfg[i][0])
 
         for element in p0:
@@ -392,10 +393,30 @@ class SubtreePlain(object):
         else:
             return [False, []]
 
-    def detect_cut(self, second_iteration=False, parameters=None):
-        """
-        Detect generally a cut in the graph (applying all the algorithms)
-        """
+    def check_for_cut(self, l):
+        conn_components = self.get_connected_components(self.ingoing, self.outgoing, self.activities)
+        this_nx_graph = self.transform_dfg_to_directed_nx_graph()
+        strongly_connected_components = [list(x) for x in nx.strongly_connected_components(this_nx_graph)]
+        #search for cut and return true as soon as a cut is found:
+        xor_cut = self.detect_xor(conn_components, this_nx_graph, strongly_connected_components)
+        if xor_cut[0]:
+            return True
+        else:
+            sequence_cut = self.detect_sequence(conn_components, this_nx_graph, strongly_connected_components)
+            if sequence_cut[0]:
+                return True
+            else:
+                parallel_cut = self.detect_sequence(conn_components, this_nx_graph, strongly_connected_components)
+                if parallel_cut[0]:
+                    return True
+                else:
+                    loop_cut = self.detect_sequence(conn_components, this_nx_graph, strongly_connected_components)
+                    if loop_cut[0]:
+                        return True
+                    else:
+                        return False
+
+    def detect_cut(self,  second_iteration=False, parameters=None):
         if parameters is None:
             parameters = {}
         if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
@@ -404,34 +425,41 @@ class SubtreePlain(object):
             parameters[pmutil.constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] = parameters[
                 pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
         activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
-
-        if self.dfg:
-            # print("\n\n")
+        # check base cases:
+        empty_log = base_case.empty_log(self.log)
+        single_activity = base_case.single_activity(self.log)
+        if empty_log:
+            self.detected_cut = 'empty_log'
+        elif single_activity:
+            self.detected_cut = 'single_activity'
+        # if no base cases are found, search for a cut:
+        else:
             conn_components = self.get_connected_components(self.ingoing, self.outgoing, self.activities)
             this_nx_graph = self.transform_dfg_to_directed_nx_graph()
             strongly_connected_components = [list(x) for x in nx.strongly_connected_components(this_nx_graph)]
             xor_cut = self.detect_xor(conn_components, this_nx_graph, strongly_connected_components)
-
+            # the following part searches for a cut in the current log
+            # if a cut is found, the log is split according to the cut, the resulting logs are saved in new_logs
+            # recursion is used on all the logs in new_logs
             if xor_cut[0]:
-                logs = split.split_log("xor", xor_cut[1], self.log)
-                self.detected_cut = "concurrent"
-
-                for l in logs:
+                self.detected_cut = 'concurrent'
+                new_logs = split.split_xor(xor_cut[1], self.log)
+                for l in new_logs:
                     new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters={
                         pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
                     activities = attributes_filter.get_attribute_values(l, activity_key)
                     self.children.apppend(
-                        SubtreePlain(l, new_dfg, self.master_dfg, self.initial_dfg, activities, self.counts, self.rec_depth + 1,
+                        SubtreePlain(l, new_dfg, self.master_dfg, self.initial_dfg, activities, self.counts,
+                                     self.rec_depth + 1,
                                      noise_threshold=self.noise_threshold,
                                      initial_start_activities=self.initial_start_activities,
                                      initial_end_activities=self.initial_end_activities))
             else:
                 sequence_cut = self.detect_sequence(conn_components, this_nx_graph, strongly_connected_components)
                 if sequence_cut[0]:
-                    logs = split.split_log("sequential", sequence_cut[1], self.log)
+                    new_logs = split.split_sequence(sequence_cut[1], self.log)
                     self.detected_cut = "sequential"
-
-                    for l in logs:
+                    for l in new_logs:
                         new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters={
                             pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
                         activities = attributes_filter.get_attribute_values(l, activity_key)
@@ -442,11 +470,11 @@ class SubtreePlain(object):
                                          initial_start_activities=self.initial_start_activities,
                                          initial_end_activities=self.initial_end_activities))
                 else:
-                    parallel_cut = self.detect_sequence(conn_components, this_nx_graph, strongly_connected_components)
+                    parallel_cut = self.detect_sequence(self)
                     if parallel_cut[0]:
-                        logs = split.split_log("parallel", parallel_cut[1], self.log)
+                        new_logs = split.split_parallel(parallel_cut[1], self.log)
                         self.detected_cut = "parallel"
-                        for l in logs:
+                        for l in new_logs:
                             new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters={
                                 pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
                             activities = attributes_filter.get_attribute_values(l, activity_key)
@@ -457,11 +485,11 @@ class SubtreePlain(object):
                                              initial_start_activities=self.initial_start_activities,
                                              initial_end_activities=self.initial_end_activities))
                     else:
-                        loop_cut = self.detect_sequence(conn_components, this_nx_graph, strongly_connected_components)
+                        loop_cut = self.detect_loop(self)
                         if loop_cut[0]:
-                            logs = split.split_log("loop", loop_cut[1], self.log)
+                            new_logs = split.split_loop(loop_cut[1], self.log)
                             self.detected_cut = "loopCut"
-                            for l in logs:
+                            for l in new_logs:
                                 new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters={
                                     pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
                                 activities = attributes_filter.get_attribute_values(l, activity_key)
@@ -470,14 +498,147 @@ class SubtreePlain(object):
                                                  self.rec_depth + 1,
                                                  noise_threshold=self.noise_threshold,
                                                  initial_start_activities=self.initial_start_activities,
-                                                 initial_end_activities=self.initial_end_activities))
-                        else:
-                            if self.noise_threshold > 0:
-                                if not second_iteration:
-                                    self.initialize_tree(self.dfg, self.initial_dfg, None, second_iteration=True)
-                            else:
-                                pass
-                            self.detected_cut = "flower"
+                                                 initial_end_activities=self.initial_end_activities)
+
+                        # if the code gets to this point, there is no base_case and no cut found in the log
+                        # therefore, we now apply fall through:
+                        self.apply_fall_through(self, parameters)
+
+
+    # this function is called at the end of detect_cut in the case, that no cut was found and a fallthrough needs to be applied
+    def apply_fall_through(self, parameters = None):
+        if parameters is None:
+            parameters = {}
+        if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
+            parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
+        if pmutil.constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY not in parameters:
+            parameters[pmutil.constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] = parameters[
+                pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
+        activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
+
+        empty_trace, new_log = fall_through.empty_trace(self.log)
+        # if an empty trace is found, the empty trace fallthrough applies
+        #
+        if empty_trace:
+            self.detected_cut = 'concurrent'
+            new_dfg = [(k, v) for k, v in dfg_inst.apply(new_log, parameters={
+                pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
+            activities = attributes_filter.get_attribute_values(new_log, activity_key)
+            # TODO: append silent transition
+            # self.children.append()
+            self.children.append(
+                SubtreePlain(new_log, new_dfg, self.master_dfg, self.initial_dfg, activities, self.counts,
+                             self.rec_depth + 1,
+                             noise_threshold=self.noise_threshold,
+                             initial_start_activities=self.initial_start_activities,
+                             initial_end_activities=self.initial_end_activities))
+        else:
+            activity_once, new_log, small_log = fall_through.act_once_per_trace(self.log, self.activities)
+            if activity_once:
+                self.detected_cut = 'parallel'
+                # create two new dfgs as we need them to append to self.children later
+                new_dfg = [(k, v) for k, v in dfg_inst.apply(new_log, parameters={
+                    pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if
+                           v > 0]
+                activities = attributes_filter.get_attribute_values(new_log, activity_key)
+                small_dfg = [(k, v) for k, v in dfg_inst.apply(small_log, parameters={
+                    pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if
+                           v > 0]
+                small_activities = attributes_filter.get_attribute_values(small_log, activity_key)
+                # append the chosen activity as leaf:
+                self.children.append(
+                    SubtreePlain(small_log, small_dfg, self.master_dfg, self.initial_dfg, small_activities,
+                                 self.counts,
+                                 self.rec_depth + 1,
+                                 noise_threshold=self.noise_threshold,
+                                 initial_start_activities=self.initial_start_activities,
+                                 initial_end_activities=self.initial_end_activities))
+                # continue with the recursion on the new log
+                self.children.append(
+                    SubtreePlain(new_log, new_dfg, self.master_dfg, self.initial_dfg, activities,
+                                 self.counts,
+                                 self.rec_depth + 1,
+                                 noise_threshold=self.noise_threshold,
+                                 initial_start_activities=self.initial_start_activities,
+                                 initial_end_activities=self.initial_end_activities))
+
+            else:
+                activity_concurrent, new_log, small_log = fall_through.activity_concurrent(self.log, self.activities)
+                if activity_concurrent:
+                    self.detected_cut = 'parallel'
+                    #create two new dfgs on to append later
+                    new_dfg = [(k, v) for k, v in dfg_inst.apply(new_log, parameters={
+                        pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if
+                               v > 0]
+                    activities = attributes_filter.get_attribute_values(new_log, activity_key)
+                    small_dfg = [(k, v) for k, v in dfg_inst.apply(small_log, parameters={
+                        pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if
+                               v > 0]
+                    small_activities = attributes_filter.get_attribute_values(small_log, activity_key)
+                    # append the concurrent activity as leaf:
+                    self.children.append(
+                        SubtreePlain(small_log, small_dfg, self.master_dfg, self.initial_dfg,
+                                     small_activities,
+                                     self.counts,
+                                     self.rec_depth + 1,
+                                     noise_threshold=self.noise_threshold,
+                                     initial_start_activities=self.initial_start_activities,
+                                     initial_end_activities=self.initial_end_activities))
+                    # continue with the recursion on the new log:
+                    self.children.append(
+                        SubtreePlain(new_log, new_dfg, self.master_dfg, self.initial_dfg,
+                                     activities,
+                                     self.counts,
+                                     self.rec_depth + 1,
+                                     noise_threshold=self.noise_threshold,
+                                     initial_start_activities=self.initial_start_activities,
+                                     initial_end_activities=self.initial_end_activities))
+                else:
+                    strict_tau_loop, new_log = fall_through.strict_tau_loop(self.log, self.start_activities, self.end_activities)
+                    if strict_tau_loop:
+                        self.detected_cut = 'loopCut'
+                        new_dfg = [(k, v) for k, v in dfg_inst.apply(new_log, parameters={
+                            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if
+                                   v > 0]
+                        activities = attributes_filter.get_attribute_values(new_log, activity_key)
+                        self.children.append(
+                            SubtreePlain(new_log, new_dfg, self.master_dfg, self.initial_dfg,
+                                         activities,
+                                         self.counts,
+                                         self.rec_depth + 1,
+                                         noise_threshold=self.noise_threshold,
+                                         initial_start_activities=self.initial_start_activities,
+                                         initial_end_activities=self.initial_end_activities))
+                        # TODO: append silent transition
+                        # self.children.append()
+                    else:
+                        tau_loop, new_log = fall_through.tau_loop(self.log, self.start_activities)
+                        if tau_loop:
+                            self.detected_cut = 'loopCut'
+                            new_dfg = [(k, v) for k, v in dfg_inst.apply(new_log, parameters={
+                                pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if
+                                       v > 0]
+                            activities = attributes_filter.get_attribute_values(new_log, activity_key)
+                            self.children.append(
+                                SubtreePlain(new_log, new_dfg, self.master_dfg, self.initial_dfg,
+                                             activities,
+                                             self.counts,
+                                             self.rec_depth + 1,
+                                             noise_threshold=self.noise_threshold,
+                                             initial_start_activities=self.initial_start_activities,
+                                             initial_end_activities=self.initial_end_activities))
+                            # TODO: append silent transition
+                            # self.children.append()
+
+
+
+
+
+
+
+
+
+
 
 
 def make_tree(log, dfg, master_dfg, initial_dfg, activities, c, noise_threshold, start_activities,

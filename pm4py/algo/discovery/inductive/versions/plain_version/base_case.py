@@ -1,7 +1,17 @@
 
 
-def empty_log():
+def empty_log(log):
+    if len(log) == 0:
+        return True
+    else:
+        return False
 
-def single_activity():
 
-def check_base_case():
+def single_activity(log):
+    first_activity = log[0][0]['concept:name']
+    for i in range(0, len(log)):
+        if len(log[i]) != 1 or log[i][0]['concept:name'] != first_activity:
+            return False                # if there is a trace that has a length not equal to 1, we return false
+
+    return True,
+    # check if all traces consist of the same activity, therefore create dfg from log and get activites of that dfg

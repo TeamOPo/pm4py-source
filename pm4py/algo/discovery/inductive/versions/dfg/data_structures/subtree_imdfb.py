@@ -514,11 +514,9 @@ class SubtreeB(Subtree):
         Detect generally a cut in the graph (applying all the algorithms)
         """
 
-        print(type(conn), type(conn[0]))
-
+        #print(type(conn), type(conn[0]))
 
         if self.dfg:
-            # print("\n\n")
             conn_components = self.get_connected_components(self.ingoing, self.outgoing, self.activities)
             this_nx_graph = self.transform_dfg_to_directed_nx_graph()
             strongly_connected_components = [list(x) for x in nx.strongly_connected_components(this_nx_graph)]
@@ -526,7 +524,7 @@ class SubtreeB(Subtree):
             conc_cut = self.detect_concurrent_cut(conn_components, this_nx_graph, strongly_connected_components)
 
             if conc_cut[0]:
-                print("conc", type(conc_cut))
+                #print("conc", conc_cut[1])
                 # print(self.rec_depth, "conc_cut", self.activities)
                 for comp in conc_cut[1]:
                     new_dfg = filter_dfg_on_act(self.dfg, comp)
@@ -539,6 +537,7 @@ class SubtreeB(Subtree):
             else:
                 seq_cut = self.detect_sequential_cut(conn_components, this_nx_graph, strongly_connected_components)
                 if seq_cut[0]:
+                    #print("seq", seq_cut[1])
                     # print(self.rec_depth, "seq_cut", self.activities)
                     self.detected_cut = "sequential"
                     for child in seq_cut[1]:
