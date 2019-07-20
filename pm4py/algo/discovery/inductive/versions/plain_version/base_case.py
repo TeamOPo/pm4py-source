@@ -1,5 +1,3 @@
-
-
 def empty_log(log):
     if len(log) == 0:
         return True
@@ -8,10 +6,12 @@ def empty_log(log):
 
 
 def single_activity(log):
+    print('single_activity')
+    print(log[0][0])
     first_activity = log[0][0]['concept:name']
-    for i in range(0, len(log)):
+    for i in range(0, len(log)-1):
         if len(log[i]) != 1 or log[i][0]['concept:name'] != first_activity:
             return False                # if there is a trace that has a length not equal to 1, we return false
 
-    return True,
     # check if all traces consist of the same activity, therefore create dfg from log and get activites of that dfg
+    return True

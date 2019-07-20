@@ -10,7 +10,15 @@ from pm4py.objects.log.util import xes as xes_util
 from pm4py.algo.discovery.dfg.versions import native as dfg_inst
 
 
-def apply_im_plain(log):
+def apply_im_plain(log, parameters):
+    if parameters is None:
+        parameters = {}
+    if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
+        parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY] = xes_util.DEFAULT_NAME_KEY
+    if pmutil.constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY not in parameters:
+        parameters[pmutil.constants.PARAMETER_CONSTANT_ATTRIBUTE_KEY] = parameters[
+            pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
+    activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
     dfg = [(k, v) for k, v in dfg_inst.apply(log, parameters={
         pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
     c = Counts()

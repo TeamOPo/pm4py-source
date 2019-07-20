@@ -8,7 +8,7 @@ from pm4py.algo.discovery.inductive.versions.dfg.data_structures import subtree_
 from pm4py.objects.conversion.log import factory as conv_factory
 from pm4py.algo.discovery.dfg import factory as dfg_factory
 from pm4py.visualization.dfg import factory as dfg_vis_factory
-#from pm4py.algo.discovery.inductive.versions.plain_version import im_plain as imp
+from pm4py.algo.discovery.inductive.versions.plain_version import im_plain as imp
 
 
 
@@ -21,13 +21,17 @@ stream_big = csv_importer.import_event_stream(os.path.join("tests", "compressed_
 #gviz = pt_vis_factory.apply(tree_loop)
 #pt_vis_factory.view(tree_loop)
 
+# run im.plain
+stream = csv_importer.import_event_stream(os.path.join("tests", "input_data", "test-parallel_cut.csv"))
+log = conv_factory.apply(stream)
+print(len(log))
+tree = imp.apply_im_plain(log, None)
+gviz = pt_vis_factory.apply(tree)
+pt_vis_factory.view(gviz)
 
-#sub = imp.apply_im_plain(log)
-#gviz = pt_vis_factory.apply(sub)
-#pt_vis_factory.view(gviz)
 
-
-
+# run im.df
+'''
 stream = csv_importer.import_event_stream(os.path.join("tests", "input_data", "test-parallel_cut.csv"))
 log = conv_factory.apply(stream)
 tree = inductive_miner.apply_tree(log)
@@ -39,7 +43,7 @@ pn_vis_factory.view(gviz)
 dfg = dfg_factory.apply(log)
 #gviz = dfg_vis_factory.apply(dfg, log=log, variant="frequency")
 #dfg_vis_factory.view(gviz)
-
+'''
 
 
 

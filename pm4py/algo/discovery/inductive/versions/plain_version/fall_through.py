@@ -1,5 +1,4 @@
 from pm4py.objects.log import log
-from pm4py.algo.discovery.inductive.versions.plain_version import subtree_plain as subtree
 
 
 def empty_trace(l):
@@ -81,6 +80,30 @@ def act_once_per_trace(l, activities):
         return False, new_log, chosen_activity
 
 
+def check_for_cut(self, l):
+    conn_components = self.get_connected_components(self.ingoing, self.outgoing, self.activities)
+    this_nx_graph = self.transform_dfg_to_directed_nx_graph()
+    strongly_connected_components = [list(x) for x in nx.strongly_connected_components(this_nx_graph)]
+    #search for cut and return true as soon as a cut is found:
+    xor_cut = self.detect_xor(conn_components, this_nx_graph, strongly_connected_components)
+    if xor_cut[0]:
+        return True
+    else:
+        sequence_cut = self.detect_sequence(conn_components, this_nx_graph, strongly_connected_components)
+        if sequence_cut[0]:
+            return True
+        else:
+            parallel_cut = self.detect_sequence(conn_components, this_nx_graph, strongly_connected_components)
+            if parallel_cut[0]:
+                return True
+            else:
+                loop_cut = self.detect_sequence(conn_components, this_nx_graph, strongly_connected_components)
+                if loop_cut[0]:
+                    return True
+                else:
+                    return False
+
+
 def activity_concurrent(l, activities):
     small_log = log.EventLog()
     small_trace = log.Trace()
@@ -90,7 +113,7 @@ def activity_concurrent(l, activities):
     for i in range(0, len(activities_list)):
         act = activities_list[i][0]                     # iterate through activities
         test_log = filter_activity_from_trace(l, act)
-        cut = subtree.check_for_cut(test_log)           # check if leaving out act, leads to finding a cut
+        cut = check_for_cut(test_log)           # check if leaving out act, leads to finding a cut
         if cut:
             # save act to small_trace, so that it can be appended as leaf later on
             for trace in l:
