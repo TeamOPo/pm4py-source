@@ -123,15 +123,9 @@ def apply_tree(log, parameters):
     activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
 
     # get the DFG
-    print("Timo ist ein Profi")
     dfg = [(k, v) for k, v in dfg_inst.apply(log, parameters={
         pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
 
-    log_new= lawg.EventLog()
-    trace_new = lawg.Trace()
-    trace_new.append(log[0][1])
-    log_new.append(trace_new)
-    print(log_new)
 
 
     # gets the start activities from the log

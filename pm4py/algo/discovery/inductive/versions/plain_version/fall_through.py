@@ -1,5 +1,9 @@
 from pm4py.objects.log import log
+import networkx as nx
+from pm4py.algo.discovery.inductive.versions.plain_version.data_structures import subtree_plain as subtree
 
+if __name__ == '__main__':
+    from pm4py.algo.discovery.inductive.versions.plain_version import subtree_plain
 
 def empty_trace(l):
     # checks if there are empty traces in the log, if so, creates new_log without those empty traces
@@ -40,11 +44,10 @@ def act_once_per_trace(l, activities):
     possible_activities = list()
     # transform dict of activities to list
     activities_dict = activities
-    activities_list = activities_dict.items()
-    for i in range(0, len(activities_list)):
-        if activities_list[i][1] == number_of_traces:
-            # if activity appears as often as there are traces, add to list of possible activities
-            possible_activities.append(activities_list[i][0])
+    for key, value in activities_dict.items():
+        # if activity appears as often as there are traces, add to list of possible activities:
+        if value == number_of_traces:
+            possible_activities.append(key)
 
     chosen_activity = None
     # find an activity that appears exactly once per trace and save it in chose_activity
@@ -80,40 +83,14 @@ def act_once_per_trace(l, activities):
         return False, new_log, chosen_activity
 
 
-def check_for_cut(self, l):
-    conn_components = self.get_connected_components(self.ingoing, self.outgoing, self.activities)
-    this_nx_graph = self.transform_dfg_to_directed_nx_graph()
-    strongly_connected_components = [list(x) for x in nx.strongly_connected_components(this_nx_graph)]
-    #search for cut and return true as soon as a cut is found:
-    xor_cut = self.detect_xor(conn_components, this_nx_graph, strongly_connected_components)
-    if xor_cut[0]:
-        return True
-    else:
-        sequence_cut = self.detect_sequence(conn_components, this_nx_graph, strongly_connected_components)
-        if sequence_cut[0]:
-            return True
-        else:
-            parallel_cut = self.detect_sequence(conn_components, this_nx_graph, strongly_connected_components)
-            if parallel_cut[0]:
-                return True
-            else:
-                loop_cut = self.detect_sequence(conn_components, this_nx_graph, strongly_connected_components)
-                if loop_cut[0]:
-                    return True
-                else:
-                    return False
-
-
-def activity_concurrent(l, activities):
+def activity_concurrent(self, l, activities):
     small_log = log.EventLog()
     small_trace = log.Trace()
     chosen_activity = None
     activities_dict = activities
-    activities_list = activities_dict.items()
-    for i in range(0, len(activities_list)):
-        act = activities_list[i][0]                     # iterate through activities
-        test_log = filter_activity_from_trace(l, act)
-        cut = check_for_cut(test_log)           # check if leaving out act, leads to finding a cut
+    for key, value in activities_dict.items():          # iterate through activities (saved in key)
+        test_log = filter_activity_from_trace(l, key)
+        cut = subtree.SubtreePlain.check_for_cut(self, test_log)            # check if leaving out act, leads to finding a cut
         if cut:
             # save act to small_trace, so that it can be appended as leaf later on
             for trace in l:
@@ -127,24 +104,26 @@ def activity_concurrent(l, activities):
 
             return True, test_log, small_log                  # if so, return new log
 
-    return False, test_log, small_log                # if,  after iterating through all act's still no cut is found, return false
+    return False, test_log, small_log      # if,  after iterating through all act's still no cut is found, return false
 
 
 def split_between_end_and_start(trace, start_activities, end_activities):
     # splits a trace between the first occurrence of an end activity  following a start activity
     found_split = False
-    new_trace_1 = trace
+    new_trace_1 = log.Trace()
     new_trace_2 = log.Trace()
     i = 0
-    while not found_split and i <= len(trace):      # for all events in trace
+
+    while not found_split and i < len(trace)-1:
         if trace[i]['concept:name'] in end_activities and trace[i + 1]['concept:name'] in start_activities:
             found_split = True
-            new_trace_1 = log.Trace()
             for j in range(0, i):
                 new_trace_1.append(trace[j])
-            for k in range(i+1, len(trace)):
+            for k in range(i + 1, len(trace)):
                 new_trace_2.append(trace[k])
-        i += 1
+            break
+        else:
+            i += 1
 
     return new_trace_1, new_trace_2, found_split
 
@@ -170,14 +149,13 @@ def strict_tau_loop(l, start_activities, end_activities):
 
 def split_before_start(trace, start_activities):
     found_split = False
-    new_trace_1 = trace
+    new_trace_1 = log.Trace()
     new_trace_2 = log.Trace()
-    i = 0
-    while not found_split and i <= len(trace):  # for all events in trace
-        if trace[i]['concept:name'] in start_activities:
+    i = 1
+    while not found_split and i < len(trace):  # for all events in trace
+        if trace[i]['concept:name'] in start_activities and len(trace) > 1:
             found_split = True
-            new_trace_1 = log.Trace()
-            for j in range(0, i-1):
+            for j in range(0, i):
                 new_trace_1.append(trace[j])
             for k in range(i, len(trace)):
                 new_trace_2.append(trace[k])
@@ -189,9 +167,9 @@ def split_before_start(trace, start_activities):
 def tau_loop(l, start_activities):
     # pretty much the same code as in strict_tau_loop, just that we split at a different point
     new_log = log.EventLog()
-    for trace in log:
+    for trace in l:
         t1, t2, found_split = split_before_start(trace, start_activities)
-        if found_split:
+        if found_split and len(t2) != 0:
             new_log.append(t1)
             while found_split:
                 t1, t2, found_split = split_before_start(t2, start_activities)

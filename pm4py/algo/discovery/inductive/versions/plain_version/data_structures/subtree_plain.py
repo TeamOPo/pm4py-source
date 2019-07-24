@@ -1,4 +1,4 @@
-from copy import copy
+from copy import copy, deepcopy
 import networkx as nx
 from pm4py.objects.log.util import xes as xes_util
 from pm4py.algo.discovery.dfg.utils.dfg_utils import get_activities_from_dfg, \
@@ -122,7 +122,8 @@ class SubtreePlain(object):
         self.negated_ingoing = get_ingoing_edges(self.negated_dfg)
         self.detected_cut = None
         self.children = []
-        self.detect_cut(second_iteration=False)
+        self.log = log
+        self.detect_cut(second_iteration=False, parameters=None)
 
     def create_dfg(self, parameters=None):
         if parameters is None:
@@ -184,7 +185,6 @@ class SubtreePlain(object):
 
         connected_components = []
 
-        """Question, if activity A is in ingoing and outgoing, is ingoing[act] not the same as outgoing[act]? Does this not refer to the same A?"""
         for act in ingoing:
             ingoing_act = set(ingoing[act].keys())
             if act in outgoing:
@@ -239,7 +239,6 @@ class SubtreePlain(object):
                 break
 
         return connected_components
-
 
     def get_connection_matrix(self, strongly_connected_components):
         """
@@ -374,40 +373,73 @@ class SubtreePlain(object):
     def detect_loop(self):
         # p0 is part of return value, it contains the partition of activities
         # write all start and end activities in p1
-        p1 = set()
+        p_a = []
         if type(self.start_activities) is dict:
-            p1.add(self.start_activities)
-            p1.add(list(self.end_activities))
+            p_a.append(self.start_activities)
+            p_a.append(list(self.end_activities))
         else:
-            p1.add(self.start_activities)
-            p1.add(self.end_activities)
+            p_a.append(self.start_activities)
+            p_a.append(self.end_activities)
+        p1 = []
+        for element in p_a:
+            for i in range(0, len(element)):
+                p1.append(element[i])                       # p1 now contains start and end activities in a list
+
         # create new dfg without the transitions to start and end activities
-        new_dfg = self.dfg
-        for act in p1:
-            for element in new_dfg:
-                if element[0][0] == act or element[0][1] == act:
-                    new_dfg.remove(element)
+        new_dfg = deepcopy(self.dfg)
+        copy_dfg = copy(new_dfg)
+        for ele in copy_dfg:
+            if ele[0][0] in p1 or ele[0][1] in p1:
+                new_dfg.remove(ele)
+
         # get connected components of this new dfg
         new_ingoing = get_ingoing_edges(new_dfg)
         new_outgoing = get_outgoing_edges(new_dfg)
-        p0 = get_connected_components(self, new_ingoing, new_outgoing,
-                                      self.activities)  # p0 is like P2,...,Pn in line 3 on page 190 of the IM Thesis
+        # it was a pain in the *** to get a working directory of the current_activities, as we can't iterate ove the dfg
+        current_activities = {}
+        current_activities_list = []
+        for element in self.activities:
+            for i in range(0, len(element)):
+                if element[i] not in p1:
+                    current_activities_list.append(element[i])
+        for element in current_activities_list:
+            current_activities.update({element: 1})
+        p0 = get_connected_components(new_ingoing, new_outgoing, current_activities)
+        p0.insert(0, p1)
 
+        # p0 is like P1,P2,...,Pn in line 3 on page 190 of the IM Thesis
         # check for subsets in p0 that have connections to and end or from a start activity
-        for element in p0:
-            for act in element:
-                for e in self.end_activities:
-                    for i in range(0, self.dfg.length()):
-                        if (act, e) == self.dfg[i][
-                            0]:  # is there an element in the dfg pointing from any act in a subset of p0 to an end activity?
-                            p0.remove(element)  # remove subsets that are connected to an end activity
+        p0_copy = deepcopy(p0)
+        removed = False                 # we use the bool removed to exit the nested loops once we removed an element
+        for element in p0_copy:                             # for every set in p0
+            for act in element:                             # for every activity in this set
+                for e in self.end_activities:               # for every end activity
+                    for i in range(0, len(self.dfg)):
+                        if (act, e) == self.dfg[i][0]:      # check if connected
+                            # is there an element in the dfg pointing from any act in a subset of p0 to an end activity?
+                            for acti in element:
+                                p0[0].append(acti)
+                            p0.remove(element)              # remove subsets that are connected to an end activity
+                            removed = True
+                            break
+                    if removed:
+                        break
                 for s in self.start_activities:
-                    for i in range(0, self.dfg.length()):
-                        if (s, act) == self.dfg[i][0]:
-                            p0.remove(element)  # remove subsets that are connected from a start activity
+                    if not removed:
+                        for i in range(0, len(self.dfg)):
+                            if (s, act) == self.dfg[i][0]:
+                                for acti in element:
+                                    p0[0].append(acti)
+                                p0.remove(element)  # remove subsets that are connected from a start activity
+                                removed = True
+                                break
+                    else:
+                        break
+                if removed:
+                    break
 
         iterable_dfg = list()
-        for i in range(0, self.dfg.length()):
+        for i in range(0, len(self.dfg)):
             iterable_dfg.append(self.dfg[i][0])
 
         for element in p0:
@@ -416,6 +448,8 @@ class SubtreePlain(object):
                     if (e, act) in iterable_dfg:  # get those act, that are connected from an end activity
                         for e2 in self.end_activities:  # check, if the act is connected from all end activities
                             if (e2, act) not in iterable_dfg:
+                                for acti in element:
+                                    p0[0].append(acti)
                                 p0.remove(element)
                                 break
                 for s in self.start_activities:
@@ -423,11 +457,12 @@ class SubtreePlain(object):
                         # a start activity)
                         for s2 in self.start_activities:
                             if (act, s2) not in iterable_dfg:
+                                for acti in element:
+                                    p0[0].append(acti)
                                 p0.remove(element)
                                 break
 
         if len(p0) > 0:
-            p0.append(p1)
             return [True, p0]
         else:
             return [False, []]
@@ -436,7 +471,7 @@ class SubtreePlain(object):
         conn_components = self.get_connected_components(self.ingoing, self.outgoing, self.activities)
         this_nx_graph = self.transform_dfg_to_directed_nx_graph()
         strongly_connected_components = [list(x) for x in nx.strongly_connected_components(this_nx_graph)]
-        #search for cut and return true as soon as a cut is found:
+        # search for cut and return true as soon as a cut is found:
         xor_cut = self.detect_xor(conn_components, this_nx_graph, strongly_connected_components)
         if xor_cut[0]:
             return True
@@ -455,6 +490,18 @@ class SubtreePlain(object):
                     else:
                         return False
 
+    def show_split(self, new_logs):
+        nls = []
+        for log in new_logs:
+            nl = []
+            for trace in log:
+                nt = []
+                for element in trace:
+                    nt.append(element['concept:name'])
+                nl.append(nt)
+            nls.append(nl)
+        return nls
+
     def detect_cut(self,  second_iteration=False, parameters=None):
         if parameters is None:
             parameters = {}
@@ -468,8 +515,10 @@ class SubtreePlain(object):
         empty_log = base_case.empty_log(self.log)
         single_activity = base_case.single_activity(self.log)
         if empty_log:
+            print('detected empty_log')
             self.detected_cut = 'empty_log'
         elif single_activity:
+            print('detected single_activity')
             self.detected_cut = 'single_activity'
         # if no base cases are found, search for a cut:
         else:
@@ -481,8 +530,10 @@ class SubtreePlain(object):
             # if a cut is found, the log is split according to the cut, the resulting logs are saved in new_logs
             # recursion is used on all the logs in new_logs
             if xor_cut[0]:
+                print('detected concurrent_cut')
                 self.detected_cut = 'concurrent'
                 new_logs = split.split_xor(xor_cut[1], self.log)
+                print('splitted to: ', self.show_split(new_logs))
                 for l in new_logs:
                     new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters={
                         pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
@@ -498,6 +549,8 @@ class SubtreePlain(object):
                 if sequence_cut[0]:
                     new_logs = split.split_sequence(sequence_cut[1], self.log)
                     self.detected_cut = "sequential"
+                    print('detected sequence_cut')
+                    print('splitted to: ', self.show_split(new_logs))
                     for l in new_logs:
                         new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters={
                             pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
@@ -513,6 +566,8 @@ class SubtreePlain(object):
                     if parallel_cut[0]:
                         new_logs = split.split_parallel(parallel_cut[1], self.log)
                         self.detected_cut = "parallel"
+                        print('detected parallel_cut')
+                        print('splitted to: ', self.show_split(new_logs))
                         for l in new_logs:
                             new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters={
                                 pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
@@ -528,6 +583,8 @@ class SubtreePlain(object):
                         if loop_cut[0]:
                             new_logs = split.split_loop(loop_cut[1], self.log)
                             self.detected_cut = "loopCut"
+                            print('detected loop', loop_cut[1])
+                            print('splitted to: ', self.show_split(new_logs))
                             for l in new_logs:
                                 new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters={
                                     pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
@@ -541,7 +598,7 @@ class SubtreePlain(object):
 
                         # if the code gets to this point, there is no base_case and no cut found in the log
                         # therefore, we now apply fall through:
-                        self.apply_fall_through(self, parameters)
+                        self.apply_fall_through(parameters)
 
     # this is called at the end of detect_cut, if no cut was found and a fallthrough needs to be applied
     def apply_fall_through(self, parameters=None):
@@ -599,7 +656,7 @@ class SubtreePlain(object):
                                  initial_end_activities=self.initial_end_activities))
 
             else:
-                activity_concurrent, new_log, small_log = fall_through.activity_concurrent(self.log, self.activities)
+                activity_concurrent, new_log, small_log = fall_through.activity_concurrent(self, self.log, self.activities)
                 if activity_concurrent:
                     self.detected_cut = 'parallel'
                     # create two new dfgs on to append later
@@ -663,9 +720,9 @@ class SubtreePlain(object):
                                              initial_end_activities=self.initial_end_activities))
 
 
-def make_tree(log, dfg, master_dfg, initial_dfg, activities, c, noise_threshold, start_activities,
+def make_tree(log, dfg, master_dfg, initial_dfg, activities, c, recursion_depth, noise_threshold, start_activities,
               end_activities, initial_start_activities, initial_end_activities):
-    tree = SubtreePlain(log, dfg, master_dfg, initial_dfg, activities, c, noise_threshold, start_activities,
+    tree = SubtreePlain(log, dfg, master_dfg, initial_dfg, activities, c, recursion_depth, noise_threshold, start_activities,
                         end_activities, initial_start_activities, initial_end_activities)
 
     return tree

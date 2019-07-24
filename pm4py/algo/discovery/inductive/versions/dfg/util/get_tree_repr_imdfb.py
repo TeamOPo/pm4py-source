@@ -160,4 +160,5 @@ def get_repr(spec_tree_struct, rec_depth, contains_empty_traces=False):
 
         return master_tree_repr
 
+    print(final_tree_repr)
     return final_tree_repr

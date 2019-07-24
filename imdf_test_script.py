@@ -21,29 +21,38 @@ stream_big = csv_importer.import_event_stream(os.path.join("tests", "compressed_
 #gviz = pt_vis_factory.apply(tree_loop)
 #pt_vis_factory.view(tree_loop)
 
+
+
 # run im.plain
-stream = csv_importer.import_event_stream(os.path.join("tests", "input_data", "test-parallel_cut.csv"))
+stream = csv_importer.import_event_stream(os.path.join("tests", "input_data", "test-loop_cut2.csv"))
 log = conv_factory.apply(stream)
-print(len(log))
+log_abstracted = []
+for trace in log:
+    new_trace = []
+    for element in trace:
+        new_trace.append(element['concept:name'])
+    log_abstracted.append(new_trace)
+#print('starting with ', log_abstracted)
 tree = imp.apply_im_plain(log, None)
+print(tree)
 gviz = pt_vis_factory.apply(tree)
-pt_vis_factory.view(gviz)
+#pt_vis_factory.view(gviz)
 
 
 # run im.df
 '''
-stream = csv_importer.import_event_stream(os.path.join("tests", "input_data", "test-parallel_cut.csv"))
+stream = csv_importer.import_event_stream(os.path.join("tests", "input_data", "test-loop_cut2.csv"))
 log = conv_factory.apply(stream)
 tree = inductive_miner.apply_tree(log)
 gviz = pt_vis_factory.apply(tree)
 pt_vis_factory.view(gviz)
-net, im, fm = inductive_miner.apply(log)
-gviz = pn_vis_factory.apply(net, im, fm)
-pn_vis_factory.view(gviz)
+#net, im, fm = inductive_miner.apply(log)
+#gviz = pn_vis_factory.apply(net, im, fm)
+#pn_vis_factory.view(gviz)
 dfg = dfg_factory.apply(log)
 #gviz = dfg_vis_factory.apply(dfg, log=log, variant="frequency")
 #dfg_vis_factory.view(gviz)
+
+
+
 '''
-
-
-

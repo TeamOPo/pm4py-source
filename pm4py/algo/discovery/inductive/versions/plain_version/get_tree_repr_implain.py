@@ -56,7 +56,14 @@ def get_repr(spec_tree_struct, rec_depth, contains_empty_traces=False):
     -----------
     final_tree_repr
         Representation of the tree (could be printed, transformed, viewed)
+
+
+    print('ist es hier noch richtig?', spec_tree_struct.activities, spec_tree_struct.detected_cut)
+    for child in spec_tree_struct.children:
+        print('activities: ', child.activities)
+        print('detected_cut: ', child.detected_cut)
     """
+
     base_cases = ('empty_log', 'single_activity')
     cut = ('concurrent', 'sequential', 'parallel', 'loopCut')
     # note that the activity_once_per_trace is not included here, as it is can be dealt with as a parallel cut
@@ -131,5 +138,7 @@ def get_repr(spec_tree_struct, rec_depth, contains_empty_traces=False):
             # now add the tau to the children to get the wanted output
             final_tree_repr.children.append(ProcessTree(operator=None, label=None))
 
+
+    print(final_tree_repr)
     return final_tree_repr
 

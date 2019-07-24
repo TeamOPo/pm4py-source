@@ -1,7 +1,7 @@
 from pm4py import util as pmutil
 from pm4py.algo.discovery.inductive.util import shared_constants
 from pm4py.algo.discovery.inductive.util.petri_el_count import Counts
-from pm4py.algo.discovery.inductive.versions.dfg.util import get_tree_repr_imdfb
+from pm4py.algo.discovery.inductive.versions.plain_version import get_tree_repr_implain
 from pm4py.algo.discovery.inductive.versions.plain_version.data_structures import subtree_plain as subtree
 from pm4py.algo.filtering.log.attributes import attributes_filter
 from pm4py.algo.filtering.log.end_activities import end_activities_filter
@@ -32,9 +32,10 @@ def apply_im_plain(log, parameters):
     if traces_length:
         contains_empty_traces = min([len(trace) for trace in log]) == 0
 
-    sub = subtree.make_tree(log, dfg, dfg, dfg, activities, c, noise_threshold, start_activities, end_activities,
+    recursion_depth = 0
+    sub = subtree.make_tree(log, dfg, dfg, dfg, activities, c, recursion_depth, noise_threshold, start_activities, end_activities,
                             start_activities, end_activities)
 
-    tree_repr = get_tree_repr_imdfb.get_repr(sub, 0, contains_empty_traces=contains_empty_traces)
+    tree_repr = get_tree_repr_implain.get_repr(sub, 0, contains_empty_traces=contains_empty_traces)
     return tree_repr
 
