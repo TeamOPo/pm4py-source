@@ -13,6 +13,7 @@ def get_outgoing_edges(dfg):
             if not el[0] in outgoing:
                 outgoing[el[0]] = {}
             outgoing[el[0]][el[1]] = dfg[el]
+            print('outgoing: ', outgoing)
         else:
             if not el[0][0] in outgoing:
                 outgoing[el[0][0]] = {}

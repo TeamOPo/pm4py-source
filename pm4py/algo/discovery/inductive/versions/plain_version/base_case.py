@@ -6,10 +6,9 @@ def empty_log(log):
 
 
 def single_activity(log):
-    if log[0] is not None:
-        first_trace = log[0]
+    if len(log[0]) >= 1:
         first_activity = log[0][0]['concept:name']
-        for i in range(0, len(log)-1):
+        for i in range(0, len(log)):
             if len(log[i]) != 1 or log[i][0]['concept:name'] != first_activity:
                 return False                # if there is a trace that has a length not equal to 1, we return false
 

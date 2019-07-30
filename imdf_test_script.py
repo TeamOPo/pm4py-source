@@ -23,8 +23,9 @@ stream_big = csv_importer.import_event_stream(os.path.join("tests", "compressed_
 
 
 
+
 # run im.plain
-stream = csv_importer.import_event_stream(os.path.join("tests", "input_data", "test-loop_cut2.csv"))
+stream = csv_importer.import_event_stream(os.path.join("tests", "input_data", "im_plain-test.csv"))
 log = conv_factory.apply(stream)
 log_abstracted = []
 for trace in log:
@@ -32,16 +33,16 @@ for trace in log:
     for element in trace:
         new_trace.append(element['concept:name'])
     log_abstracted.append(new_trace)
-#print('starting with ', log_abstracted)
+print('starting with ', log_abstracted)
 tree = imp.apply_im_plain(log, None)
 print(tree)
 gviz = pt_vis_factory.apply(tree)
-#pt_vis_factory.view(gviz)
+pt_vis_factory.view(gviz)
 
 
 # run im.df
 '''
-stream = csv_importer.import_event_stream(os.path.join("tests", "input_data", "test-loop_cut2.csv"))
+stream = csv_importer.import_event_stream(os.path.join("tests", "input_data", "im_plain-test.csv"))
 log = conv_factory.apply(stream)
 tree = inductive_miner.apply_tree(log)
 gviz = pt_vis_factory.apply(tree)
@@ -52,7 +53,5 @@ pt_vis_factory.view(gviz)
 dfg = dfg_factory.apply(log)
 #gviz = dfg_vis_factory.apply(dfg, log=log, variant="frequency")
 #dfg_vis_factory.view(gviz)
-
-
 
 '''

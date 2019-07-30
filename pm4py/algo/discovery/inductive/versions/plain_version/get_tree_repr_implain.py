@@ -138,7 +138,6 @@ def get_repr(spec_tree_struct, rec_depth, contains_empty_traces=False):
             # now add the tau to the children to get the wanted output
             final_tree_repr.children.append(ProcessTree(operator=None, label=None))
 
-
     print(final_tree_repr)
     return final_tree_repr
 

@@ -1,9 +1,21 @@
 from pm4py.objects.log import log
 import networkx as nx
 from pm4py.algo.discovery.inductive.versions.plain_version.data_structures import subtree_plain as subtree
+from copy import deepcopy
 
 if __name__ == '__main__':
     from pm4py.algo.discovery.inductive.versions.plain_version import subtree_plain
+
+
+def show_nice_log(old_log):
+    nl = []
+    for trace in old_log:
+        nt = []
+        for element in trace:
+            nt.append(element['concept:name'])
+        nl.append(nt)
+    return nl
+
 
 def empty_trace(l):
     # checks if there are empty traces in the log, if so, creates new_log without those empty traces
@@ -15,21 +27,22 @@ def empty_trace(l):
     if contains_empty_trace:
         new_log = log.EventLog()
         for trace in l:
-            if len[trace] != 0:
+            if len(trace) != 0:
                 new_log.append(trace)
         return True, new_log
     else:
         return False, l
 
 
-def filter_activity_from_trace(l, act):
+def filter_activity_from_log(l, act):
     # remove the activity from every trace in the log
     # as trace doesnt have remove function, we just create new traces without chosen_activity
+    act_str = str(act)
     new_log = log.EventLog()
     for trace in l:
         new_trace = log.Trace()
         for event in trace:
-            if not event['concept:name'] == act:
+            if not event['concept:name'] == act_str:
                 new_trace.append(event)
         new_log.append(new_trace)
 
@@ -77,7 +90,7 @@ def act_once_per_trace(l, activities):
                 break
 
     if chosen_activity is not None:
-        new_log = filter_activity_from_trace(l, chosen_activity)
+        new_log = filter_activity_from_log(l, chosen_activity)
         return True, new_log, small_log
     else:
         return False, new_log, chosen_activity
@@ -85,23 +98,24 @@ def act_once_per_trace(l, activities):
 
 def activity_concurrent(self, l, activities):
     small_log = log.EventLog()
-    small_trace = log.Trace()
-    chosen_activity = None
-    activities_dict = activities
-    for key, value in activities_dict.items():          # iterate through activities (saved in key)
-        test_log = filter_activity_from_trace(l, key)
-        cut = subtree.SubtreePlain.check_for_cut(self, test_log)            # check if leaving out act, leads to finding a cut
+    activities_copy = deepcopy(activities)
+    empty_trace = log.Trace()
+    for key, value in activities_copy.items():          # iterate through activities (saved in key)
+        test_log = filter_activity_from_log(l, key)
+        cut = subtree.SubtreePlain.check_for_cut(self, test_log, key)  # check if leaving out act, leads to finding cut
         if cut:
             # save act to small_trace, so that it can be appended as leaf later on
             for trace in l:
-                if len(small_trace) > 0:
-                    break
+                small_trace = log.Trace()
+                contains_activity = False
                 for element in trace:
-                    if element['concept:name'] == chosen_activity:
+                    if element['concept:name'] == key:
+                        contains_activity = True
                         small_trace.append(element)
                         small_log.append(small_trace)
                         break
-
+                if not contains_activity:
+                    small_log.append(empty_trace)
             return True, test_log, small_log                  # if so, return new log
 
     return False, test_log, small_log      # if,  after iterating through all act's still no cut is found, return false
