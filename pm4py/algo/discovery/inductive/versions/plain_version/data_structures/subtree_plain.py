@@ -271,7 +271,7 @@ class SubtreePlain(object):
                     conn_matrix[comp_el_0][comp_el_1] = -1
         return conn_matrix
 
-    def detect_xor(self, conn_components, this_nx_graph, strongly_connected_components):
+    def detect_xor(self, conn_components):
         """
         Detects concurrent cut
         Parameters
@@ -289,7 +289,7 @@ class SubtreePlain(object):
 
         return [False, []]
 
-    def detect_sequence(self, conn_components, this_nx_graph, strongly_connected_components):
+    def detect_sequence(self, strongly_connected_components):
         # TODO repair for dfg  (G,I)(I,J)(G,H)(H,J).... shows cut = (G)(H)(I)(J) and not (G)(H,I)(J)
         """
                 Detect sequential cut in DFG graph
@@ -470,7 +470,7 @@ class SubtreePlain(object):
         else:
             return [False, []]
 
-    def check_for_cut(self,test_log, deleted_activity=None, parameters=None):
+    def check_for_cut(self, test_log, deleted_activity=None, parameters=None):
         if deleted_activity is not None:
             del self.activities[deleted_activity]
         if parameters is None:
@@ -490,11 +490,11 @@ class SubtreePlain(object):
         this_nx_graph = self.transform_dfg_to_directed_nx_graph()
         strongly_connected_components = [list(x) for x in nx.strongly_connected_components(this_nx_graph)]
         # search for cut and return true as soon as a cut is found:
-        xor_cut = self.detect_xor(conn_components, this_nx_graph, strongly_connected_components)
+        xor_cut = self.detect_xor(conn_components)
         if xor_cut[0]:
             return True
         else:
-            sequence_cut = self.detect_sequence(conn_components, this_nx_graph, strongly_connected_components)
+            sequence_cut = self.detect_sequence(strongly_connected_components)
             if sequence_cut[0]:
                 return True
             else:
@@ -555,7 +555,7 @@ class SubtreePlain(object):
             conn_components = self.get_connected_components(self.ingoing, self.outgoing, self.activities)
             this_nx_graph = self.transform_dfg_to_directed_nx_graph()
             strongly_connected_components = [list(x) for x in nx.strongly_connected_components(this_nx_graph)]
-            xor_cut = self.detect_xor(conn_components, this_nx_graph, strongly_connected_components)
+            xor_cut = self.detect_xor(conn_components)
             # the following part searches for a cut in the current log
             # if a cut is found, the log is split according to the cut, the resulting logs are saved in new_logs
             # recursion is used on all the logs in new_logs
@@ -581,7 +581,7 @@ class SubtreePlain(object):
                                      initial_end_activities=self.initial_end_activities))
             else:
                 print('no xor-cut')
-                sequence_cut = self.detect_sequence(conn_components, this_nx_graph, strongly_connected_components)
+                sequence_cut = self.detect_sequence(strongly_connected_components)
                 if sequence_cut[0]:
                     new_logs = split.split_sequence(sequence_cut[1], self.log)
                     self.detected_cut = "sequential"

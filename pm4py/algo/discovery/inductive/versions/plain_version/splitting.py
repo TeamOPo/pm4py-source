@@ -3,7 +3,7 @@ from copy import deepcopy
 
 
 def split_xor(cut, l):
-    new_logs = list()
+    new_logs = []
     for c in cut:                               # for cut partition
         lo = log.EventLog()
         for i in range(0, len(l)):              # for trace in log
@@ -19,7 +19,7 @@ def split_xor(cut, l):
 
 
 def split_sequence(cut, l):
-    new_logs = list()
+    new_logs = []
     for c in cut:                                       # for cut partition
         lo = log.EventLog()
         nice_log = show_nice_log(lo)

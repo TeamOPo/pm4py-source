@@ -9,6 +9,7 @@ from pm4py.objects.conversion.log import factory as conv_factory
 from pm4py.algo.discovery.dfg import factory as dfg_factory
 from pm4py.visualization.dfg import factory as dfg_vis_factory
 from pm4py.algo.discovery.inductive.versions.plain_version import im_plain as imp
+from pm4py.algo.discovery.inductive.versions.infrequent import im_infrequent as imf
 
 
 
@@ -23,7 +24,7 @@ stream_big = csv_importer.import_event_stream(os.path.join("tests", "compressed_
 
 
 
-
+'''
 # run im.plain
 stream = csv_importer.import_event_stream(os.path.join("tests", "input_data", "im_plain-test.csv"))
 log = conv_factory.apply(stream)
@@ -38,6 +39,24 @@ tree = imp.apply_im_plain(log, None)
 print(tree)
 gviz = pt_vis_factory.apply(tree)
 pt_vis_factory.view(gviz)
+'''
+
+
+# run im_infrequent:
+stream = csv_importer.import_event_stream(os.path.join("tests", "input_data", "im_plain-test.csv"))
+log = conv_factory.apply(stream)
+log_abstracted = []
+for trace in log:
+    new_trace = []
+    for element in trace:
+        new_trace.append(element['concept:name'])
+    log_abstracted.append(new_trace)
+print('starting with ', log_abstracted)
+tree = imf.apply_im_infrequent(log, 0.15, None)
+print(tree)
+gviz = pt_vis_factory.apply(tree)
+pt_vis_factory.view(gviz)
+
 
 
 # run im.df
