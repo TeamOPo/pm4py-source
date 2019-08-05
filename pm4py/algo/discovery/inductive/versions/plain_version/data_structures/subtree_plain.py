@@ -18,7 +18,7 @@ from pm4py.algo.filtering.log.start_activities import start_activities_filter
 
 
 class SubtreePlain(object):
-    def __init__(self, log, dfg, master_dfg, initial_dfg, activities, counts, rec_depth, noise_threshold=0,
+    def __init__(self, log, dfg, master_dfg, initial_dfg, activities, counts,rec_depth,  f=0, noise_threshold=0,
                  start_activities=None, end_activities=None, initial_start_activities=None,
                  initial_end_activities=None):
         """
@@ -45,6 +45,7 @@ class SubtreePlain(object):
         self.rec_depth = rec_depth
         self.noise_threshold = noise_threshold
         self.start_activities = start_activities
+        self.f = f
         if self.start_activities is None:
             self.start_activities = []
         self.end_activities = end_activities
@@ -79,7 +80,7 @@ class SubtreePlain(object):
 
         self.initialize_tree(dfg, log, initial_dfg, activities)
 
-    def initialize_tree(self, dfg, log, initial_dfg, activities, second_iteration=False):
+    def initialize_tree(self, dfg, log, initial_dfg, activities, second_iteration=False, end_call=True):
         """
             Initialize the tree
 
@@ -126,7 +127,9 @@ class SubtreePlain(object):
         self.detected_cut = None
         self.children = []
         self.log = log
-        self.detect_cut(second_iteration=False, parameters=None)
+
+        if end_call:
+            self.detect_cut(second_iteration=False, parameters=None)
 
     def create_dfg(self, parameters=None):
         if parameters is None:
@@ -290,7 +293,6 @@ class SubtreePlain(object):
         return [False, []]
 
     def detect_sequence(self, strongly_connected_components):
-        # TODO repair for dfg  (G,I)(I,J)(G,H)(H,J).... shows cut = (G)(H)(I)(J) and not (G)(H,I)(J)
         """
                 Detect sequential cut in DFG graph
                 Parameters

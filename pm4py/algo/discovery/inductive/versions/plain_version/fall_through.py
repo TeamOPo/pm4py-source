@@ -3,9 +3,6 @@ import networkx as nx
 from pm4py.algo.discovery.inductive.versions.plain_version.data_structures import subtree_plain as subtree
 from copy import deepcopy
 
-if __name__ == '__main__':
-    from pm4py.algo.discovery.inductive.versions.plain_version import subtree_plain
-
 
 def show_nice_log(old_log):
     nl = []

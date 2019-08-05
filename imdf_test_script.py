@@ -23,7 +23,6 @@ stream_big = csv_importer.import_event_stream(os.path.join("tests", "compressed_
 #pt_vis_factory.view(tree_loop)
 
 
-
 '''
 # run im.plain
 stream = csv_importer.import_event_stream(os.path.join("tests", "input_data", "im_plain-test.csv"))
@@ -39,11 +38,20 @@ tree = imp.apply_im_plain(log, None)
 print(tree)
 gviz = pt_vis_factory.apply(tree)
 pt_vis_factory.view(gviz)
+
+
+from pm4py.algo.discovery.inductive.versions.infrequent import splitting_infrequent as sif
+
+stream = csv_importer.import_event_stream(os.path.join("tests", "input_data", "test-sequence-split-if.csv"))
+log = conv_factory.apply(stream)
+cut = [['A', 'B'], ['C']]
+sif.split_sequence_infrequent(cut, log)
+
+
+
 '''
-
-
 # run im_infrequent:
-stream = csv_importer.import_event_stream(os.path.join("tests", "input_data", "im_plain-test.csv"))
+stream = csv_importer.import_event_stream(os.path.join("tests", "input_data", "test-infrequent_behaviour.csv"))
 log = conv_factory.apply(stream)
 log_abstracted = []
 for trace in log:
@@ -51,16 +59,15 @@ for trace in log:
     for element in trace:
         new_trace.append(element['concept:name'])
     log_abstracted.append(new_trace)
-print('starting with ', log_abstracted)
+# print('starting with ', log_abstracted)
 tree = imf.apply_im_infrequent(log, 0.15, None)
 print(tree)
-gviz = pt_vis_factory.apply(tree)
-pt_vis_factory.view(gviz)
+# gviz = pt_vis_factory.apply(tree)
+# pt_vis_factory.view(gviz)
 
-
-
-# run im.df
 '''
+# run im.df
+
 stream = csv_importer.import_event_stream(os.path.join("tests", "input_data", "im_plain-test.csv"))
 log = conv_factory.apply(stream)
 tree = inductive_miner.apply_tree(log)

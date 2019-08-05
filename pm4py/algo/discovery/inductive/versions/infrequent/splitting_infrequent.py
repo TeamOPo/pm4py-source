@@ -1,6 +1,36 @@
 from pm4py.objects.log import log
 
 
+def show_nice_trace(trace):
+    nt = []
+    for element in trace:
+        nt.append(element['concept:name'])
+    return nt
+
+
+def show_nice_log(l):
+    nl = []
+    for trace in l:
+        nt = []
+        for element in trace:
+            nt.append(element['concept:name'])
+        nl.append(nt)
+    return nl
+
+
+def show_nice_logs(ls):
+    nls = []
+    for l in ls:
+        nl = []
+        for trace in l:
+            nt = []
+            for element in trace:
+                nt.append(element['concept:name'])
+            nl.append(nt)
+        nls.append(nl)
+    return nls
+
+
 def filter_trace_on_cut_partition(trace, partition):
     filtered_trace = log.Trace()
     for event in trace:
@@ -10,34 +40,45 @@ def filter_trace_on_cut_partition(trace, partition):
 
 
 def find_split_point(trace, cut_partition, start, ignore):
+    possibly_best_before_first_activity = False
+    nice_trace = show_nice_trace(trace)
     least_cost = start
     position_with_least_cost = start
-    cost = 0
+    cost = float(0)
     for i in range(start, len(trace)):
-        if trace[i] in cut_partition:
+        if trace[i]['concept:name'] in cut_partition:
             cost = cost-1
-        elif trace[i] not in ignore:
+        elif trace[i]['concept:name'] not in ignore:
+            # use bool variable for the case, that the best split is before the first activity
+            if i == 0:
+                possibly_best_before_first_activity = True
             cost = cost+1
         if cost < least_cost:
             least_cost = cost
-            position_with_least_cost = i
+            position_with_least_cost = i+1
+    if possibly_best_before_first_activity and position_with_least_cost == 1:
+        position_with_least_cost = 0
     return position_with_least_cost
 
 
 def cut_trace_between_two_points(trace, point_a, point_b):
+    nice_trace = show_nice_trace(trace)
     cutted_trace = log.Trace()
-    for i in range(point_a, point_b-1):
-        cutted_trace.append(trace[i])
+    # we have to use <= although in the paper the intervall is [) because our index starts at 0
+    while point_a < point_b:
+        cutted_trace.append(trace[point_a])
+        add_act = trace[point_a]['concept:name']
+        show_nice_cutted_trace = show_nice_trace(cutted_trace)
+        point_a += 1
+
     return cutted_trace
 
 
 def split_xor_infrequent(cut, l):
     # TODO think of empty logs
     # creating the empty L_1,...,L_n from the second code-line on page 205
-    empty_log = log.EventLog
     n = len(cut)
-    new_logs = [empty_log for i in range(0, n)]
-    # TODO did this work?
+    new_logs = [log.EventLog() for i in range(0, n)]
     print('new_logs: ', new_logs)
     for trace in l:                                                 # for all traces
         number_of_events_in_trace = 0
@@ -58,9 +99,8 @@ def split_xor_infrequent(cut, l):
 
 def split_sequence_infrequent(cut, l):
     # write L_1,...,L_n like in second line of code on page 206
-    empty_log = log.EventLog
     n = len(cut)
-    new_logs = [empty_log for i in range(0, n)]
+    new_logs = [log.EventLog() for j in range(0, n)]
     ignore = []
     for i in range(0, n):
         split_point = 0
@@ -73,15 +113,12 @@ def split_sequence_infrequent(cut, l):
             cutted_trace = cut_trace_between_two_points(trace, split_point, new_split_point)
             filtered_trace = filter_trace_on_cut_partition(cutted_trace, cut[i])
             new_logs[i].append(filtered_trace)
-            split_point = new_split_point
-
     return new_logs
 
 
 def split_loop_infrequent(cut, l):
-    empty_log = log.EventLog
     n = len(cut)
-    new_logs = [empty_log for i in range(0, n)]
+    new_logs = [log.EventLog() for i in range(0, n)]
     for trace in l:
         s = cut[0]
         st = log.Trace()
@@ -105,6 +142,6 @@ def split_loop_infrequent(cut, l):
                 break
         new_logs[j].append(st)
         if s != cut[0]:
-            new_logs[0].append(empty_log)
+            new_logs[0].append(log.EventLog())
 
     return new_logs

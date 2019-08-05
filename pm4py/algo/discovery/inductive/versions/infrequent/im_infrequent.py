@@ -39,7 +39,8 @@ def apply_im_infrequent(log, f, parameters):
     threshold = f * max_value
 
     recursion_depth = 0
-    sub = subtree.make_tree(log, dfg, dfg, dfg, activities, c, recursion_depth, threshold, start_activities, end_activities,
+    print('starting with dfg: ', dfg)
+    sub = subtree.make_tree(log, dfg, dfg, dfg, activities, c, recursion_depth, f, threshold, start_activities, end_activities,
                             start_activities, end_activities)
 
     tree_repr = get_tree_repr_implain.get_repr(sub, 0, contains_empty_traces=contains_empty_traces)
