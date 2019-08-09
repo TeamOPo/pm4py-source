@@ -20,6 +20,19 @@ def split_xor(cut, l):
 
 def split_sequence(cut, l):
     new_logs = []
+    for c in cut:
+        lo = log.EventLog()
+        for trace in l:
+            new_trace = log.Trace()
+            for event in trace:
+                if event['concept:name'] in c:
+                    new_trace.append(event)
+            lo.append(new_trace)
+        new_logs.append(lo)
+    return new_logs
+
+'''
+    new_logs = []
     for c in cut:                                       # for cut partition
         lo = log.EventLog()
         nice_log = show_nice_log(lo)
@@ -39,12 +52,11 @@ def split_sequence(cut, l):
                     j += 1
             # if len(trace_new) != 0:
             nice_trace = show_nice_trace(trace_new)
-            if nice_trace not in nice_log:
-                lo.append(trace_new)
-                nice_log.append(nice_trace)
+            lo.append(trace_new)
         # if len(lo[0]) != 0:
         new_logs.append(lo)
     return new_logs
+'''
 
 
 def split_parallel(cut, l):
@@ -59,9 +71,7 @@ def split_parallel(cut, l):
                     trace_new.append(l[i][j])  # we only add the events that match the cut partition
             # if len(trace_new) != 0:
             nice_trace = show_nice_trace(trace_new)
-            if nice_trace not in nice_log:
-                lo.append(trace_new)
-                nice_log.append(nice_trace)
+            lo.append(trace_new)
         new_logs.append(lo)
     if len(new_logs) > 0:
         return new_logs
@@ -90,9 +100,7 @@ def split_loop(cut, l):
                             break
                     # if len(trace_new) != 0:
                     nice_trace = show_nice_trace(trace_new)
-                    if nice_trace not in nice_log:
-                        lo.append(trace_new)
-                        nice_log.append(nice_trace)
+                    lo.append(trace_new)
                 else:
                     j += 1
 

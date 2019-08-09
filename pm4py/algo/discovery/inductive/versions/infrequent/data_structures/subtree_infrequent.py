@@ -633,7 +633,7 @@ class SubtreeInfrequent(object):
                         print('cut inf: concurrent', cut[1])
                         self.detected_cut = 'concurrent'
                         new_logs = splitting_infrequent.split_xor_infrequent(cut[1], self.log)
-                        print('splitted to: ', self.show_split(new_logs))
+                        #print('splitted to: ', self.show_split(new_logs))
                         for l in new_logs:
                             new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters={
                                 pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
@@ -653,7 +653,7 @@ class SubtreeInfrequent(object):
                         new_logs = splitting_infrequent.split_sequence_infrequent(cut[1], self.log)
                         self.detected_cut = "sequential"
                         print('cut inf: sequence', cut[1])
-                        print('splitted to: ', self.show_split(new_logs))
+                        #print('splitted to: ', self.show_split(new_logs))
                         for l in new_logs:
                             new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters={
                                 pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
@@ -673,7 +673,7 @@ class SubtreeInfrequent(object):
                         new_logs = split.split_parallel(cut[1], self.log)
                         self.detected_cut = "parallel"
                         print('cut inf: parallel', cut[1])
-                        print('splitted to: ', self.show_split(new_logs))
+                        #print('splitted to: ', self.show_split(new_logs))
                         for l in new_logs:
                             new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters={
                                 pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
@@ -693,7 +693,7 @@ class SubtreeInfrequent(object):
                         new_logs = splitting_infrequent.split_loop_infrequent(cut[1], self.log)
                         self.detected_cut = "loopCut"
                         print('cut inf: loop', cut[1])
-                        print('splitted to: ', self.show_split(new_logs))
+                        #print('splitted to: ', self.show_split(new_logs))
                         for l in new_logs:
                             new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters={
                                 pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]

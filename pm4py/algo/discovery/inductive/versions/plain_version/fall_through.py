@@ -99,7 +99,8 @@ def activity_concurrent(self, l, activities):
     empty_trace = log.Trace()
     for key, value in activities_copy.items():          # iterate through activities (saved in key)
         test_log = filter_activity_from_log(l, key)
-        cut = subtree.SubtreePlain.check_for_cut(self, test_log, key)  # check if leaving out act, leads to finding cut
+        self_copy = deepcopy(self)
+        cut = subtree.SubtreePlain.check_for_cut(self_copy, test_log, key)  # check if leaving out act, leads to finding cut
         if cut:
             # save act to small_trace, so that it can be appended as leaf later on
             for trace in l:
@@ -135,7 +136,8 @@ def split_between_end_and_start(trace, start_activities, end_activities):
             break
         else:
             i += 1
-
+    if not found_split:
+        new_trace_1 = trace
     return new_trace_1, new_trace_2, found_split
 
 

@@ -128,8 +128,7 @@ class SubtreePlain(object):
         self.children = []
         self.log = log
 
-        if end_call:
-            self.detect_cut(second_iteration=False, parameters=None)
+        self.detect_cut(second_iteration=False, parameters=None)
 
     def create_dfg(self, parameters=None):
         if parameters is None:
@@ -286,7 +285,7 @@ class SubtreePlain(object):
         strongly_connected_components
             Strongly connected components
         """
-        if len(self.dfg) > 0:
+        if len(self.dfg) >= 0:
             if len(conn_components) > 1:
                 return [True, conn_components]
 
@@ -400,9 +399,8 @@ class SubtreePlain(object):
         current_activities = {}
         current_activities_list = []
         for element in self.activities:
-            for i in range(0, len(element)):
-                if element[i] not in p1:
-                    current_activities_list.append(element[i])
+            if element not in p1:
+                current_activities_list.append(element)
         for element in current_activities_list:
             current_activities.update({element: 1})
         p0 = get_connected_components(new_ingoing, new_outgoing, current_activities)
@@ -549,8 +547,6 @@ class SubtreePlain(object):
             print('detected empty_log')
             self.detected_cut = 'empty_log'
         elif single_activity:
-
-            print('detected single_activity')
             self.detected_cut = 'single_activity'
         # if no base cases are found, search for a cut:
         else:
@@ -588,7 +584,7 @@ class SubtreePlain(object):
                     new_logs = split.split_sequence(sequence_cut[1], self.log)
                     self.detected_cut = "sequential"
                     print('detected sequence_cut', sequence_cut[1])
-                    print('splitted to: ', self.show_split(new_logs))
+                    #print('splitted to: ', self.show_split(new_logs))
                     for l in new_logs:
                         new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters={
                             pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
@@ -611,7 +607,7 @@ class SubtreePlain(object):
                         new_logs = split.split_parallel(parallel_cut[1], self.log)
                         self.detected_cut = "parallel"
                         print('detected parallel_cut', parallel_cut[1])
-                        print('splitted to: ', self.show_split(new_logs))
+                        #print('splitted to: ', self.show_split(new_logs))
                         for l in new_logs:
                             new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters={
                                 pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
@@ -634,7 +630,7 @@ class SubtreePlain(object):
                             new_logs = split.split_loop(loop_cut[1], self.log)
                             self.detected_cut = "loopCut"
                             print('detected loop', loop_cut[1])
-                            print('splitted to: ', self.show_split(new_logs))
+                            #print('splitted to: ', self.show_split(new_logs))
                             for l in new_logs:
                                 new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters={
                                     pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]

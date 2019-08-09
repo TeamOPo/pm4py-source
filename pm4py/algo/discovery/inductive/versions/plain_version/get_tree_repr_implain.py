@@ -80,8 +80,6 @@ def get_repr(spec_tree_struct, rec_depth, contains_empty_traces=False):
         elif spec_tree_struct.detected_cut == "parallel":
             final_tree_repr = ProcessTree(operator=Operator.PARALLEL)
 
-        # if spec_tree_struct.detected_cut == "loopCut":
-        #    spec_tree_struct.children[0].must_insert_skip = True
         for ch in spec_tree_struct.children:
             # get the representation of the current child (from children in the subtree-structure):
             child = get_repr(ch, rec_depth + 1)
@@ -119,10 +117,17 @@ def get_repr(spec_tree_struct, rec_depth, contains_empty_traces=False):
             # should return LOOP( IM(L'), tau)
             final_tree_repr = ProcessTree(operator=Operator.LOOP)
             # iterate through all children of the current node
-            for ch in spec_tree_struct.children:
-                child = get_repr(ch, rec_depth + 1)
-                final_tree_repr.children.append(child)
-                child.parent = final_tree_repr
+            if spec_tree_struct.children:
+                for ch in spec_tree_struct.children:
+                    child = get_repr(ch, rec_depth + 1)
+                    final_tree_repr.children.append(child)
+                    child.parent = final_tree_repr
+            else:
+                for ch in spec_tree_struct.activities:
+                    child = get_transition(ch)
+                    final_tree_repr.append(child)
+                    child.parent = final_tree_repr
+
             # add a silent tau transition as last child of the current node
             final_tree_repr.children.append(ProcessTree(operator=None, label=None))
 
@@ -131,9 +136,10 @@ def get_repr(spec_tree_struct, rec_depth, contains_empty_traces=False):
             final_tree_repr = ProcessTree(operator=Operator.LOOP)
             xor_child = ProcessTree(operator=Operator.XOR, parent=final_tree_repr)
             # append all the activities in the current subtree to the XOR part to allow for any behaviour
-            for act in spec_tree_struct.activities:
-                child = ProcessTree(operator=None, label=act)
+            for ch in spec_tree_struct.activities:
+                child = get_transition(ch)
                 xor_child.children.append(child)
+                child.parent = xor_child
             final_tree_repr.children.append(xor_child)
             # now add the tau to the children to get the wanted output
             final_tree_repr.children.append(ProcessTree(operator=None, label=None))

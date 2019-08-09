@@ -77,9 +77,10 @@ def cut_trace_between_two_points(trace, point_a, point_b):
 def split_xor_infrequent(cut, l):
     # TODO think of empty logs
     # creating the empty L_1,...,L_n from the second code-line on page 205
+    print('starting with log ', show_nice_log(l))
+    print('and cut ', cut)
     n = len(cut)
     new_logs = [log.EventLog() for i in range(0, n)]
-    print('new_logs: ', new_logs)
     for trace in l:                                                 # for all traces
         number_of_events_in_trace = 0
         index_of_cut_partition = 0
@@ -93,8 +94,10 @@ def split_xor_infrequent(cut, l):
             if temp_counter > number_of_events_in_trace:
                 number_of_events_in_trace = temp_counter
                 index_of_cut_partition = i
-        filtered_trace = filter_trace_on_cut_partition(trace, cut[i])
+        filtered_trace = filter_trace_on_cut_partition(trace, cut[index_of_cut_partition])
         new_logs[index_of_cut_partition].append(filtered_trace)
+    print('end with ', show_nice_logs(new_logs))
+    return new_logs
 
 
 def split_sequence_infrequent(cut, l):
