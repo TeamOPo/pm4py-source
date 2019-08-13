@@ -388,7 +388,7 @@ class SubtreePlain(object):
 
         # create new dfg without the transitions to start and end activities
         new_dfg = deepcopy(self.dfg)
-        copy_dfg = copy(new_dfg)
+        copy_dfg = deepcopy(new_dfg)
         for ele in copy_dfg:
             if ele[0][0] in p1 or ele[0][1] in p1:
                 new_dfg.remove(ele)
@@ -397,29 +397,26 @@ class SubtreePlain(object):
         new_outgoing = get_outgoing_edges(new_dfg)
         # it was a pain in the *** to get a working directory of the current_activities, as we can't iterate ove the dfg
         current_activities = {}
-        current_activities_list = []
         for element in self.activities:
             if element not in p1:
-                current_activities_list.append(element)
-        for element in current_activities_list:
-            current_activities.update({element: 1})
+                current_activities.update({element: 1})
         p0 = get_connected_components(new_ingoing, new_outgoing, current_activities)
         p0.insert(0, p1)
 
         # p0 is like P1,P2,...,Pn in line 3 on page 190 of the IM Thesis
         # check for subsets in p0 that have connections to and end or from a start activity
-        p0_copy = deepcopy(p0)
-        removed = False                 # we use the bool removed to exit the nested loops once we removed an element
+        p0_copy = deepcopy(p0)            # we use the bool removed to exit the nested loops once we removed an element
         for element in p0_copy:                             # for every set in p0
+            removed = False
             if element in p0 and element != p0[0]:
                 for act in element:                             # for every activity in this set
                     for e in self.end_activities:               # for every end activity
                         for i in range(0, len(self.dfg)):
                             if (act, e) == self.dfg[i][0]:      # check if connected
-                                # is there an element in the dfg pointing from any act in a subset of p0 to an end activity
-                                for acti in element:
-                                    if acti not in p0[0]:
-                                        p0[0].append(acti)
+                                # is there an element in dfg pointing from any act in a subset of p0 to an end activity
+                                for activ in element:
+                                    if activ not in p0[0]:
+                                        p0[0].append(activ)
                                 p0.remove(element)              # remove subsets that are connected to an end activity
                                 removed = True
                                 break
@@ -439,6 +436,7 @@ class SubtreePlain(object):
                             break
                     if removed:
                         break
+
         iterable_dfg = list()
         for i in range(0, len(self.dfg)):
             iterable_dfg.append(self.dfg[i][0])
@@ -561,7 +559,7 @@ class SubtreePlain(object):
                 print('detected concurrent_cut')
                 self.detected_cut = 'concurrent'
                 new_logs = split.split_xor(xor_cut[1], self.log)
-                print('splitted to: ', self.show_split(new_logs))
+                # print('splitted to: ', self.show_split(new_logs))
                 for l in new_logs:
                     new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters={
                         pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
@@ -584,7 +582,7 @@ class SubtreePlain(object):
                     new_logs = split.split_sequence(sequence_cut[1], self.log)
                     self.detected_cut = "sequential"
                     print('detected sequence_cut', sequence_cut[1])
-                    #print('splitted to: ', self.show_split(new_logs))
+                    # print('splitted to: ', self.show_split(new_logs))
                     for l in new_logs:
                         new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters={
                             pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
@@ -607,7 +605,7 @@ class SubtreePlain(object):
                         new_logs = split.split_parallel(parallel_cut[1], self.log)
                         self.detected_cut = "parallel"
                         print('detected parallel_cut', parallel_cut[1])
-                        #print('splitted to: ', self.show_split(new_logs))
+                        # print('splitted to: ', self.show_split(new_logs))
                         for l in new_logs:
                             new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters={
                                 pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]

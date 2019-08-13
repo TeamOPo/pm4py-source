@@ -126,8 +126,6 @@ def apply_tree(log, parameters):
     dfg = [(k, v) for k, v in dfg_inst.apply(log, parameters={
         pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
 
-
-
     # gets the start activities from the log
     start_activities = start_activities_filter.get_start_activities(log, parameters=parameters)
     # gets the end activities from the log

@@ -8,6 +8,7 @@ from pm4py.algo.filtering.log.end_activities import end_activities_filter
 from pm4py.algo.filtering.log.start_activities import start_activities_filter
 from pm4py.objects.log.util import xes as xes_util
 from pm4py.algo.discovery.dfg.versions import native as dfg_inst
+from pm4py.objects.conversion.process_tree import factory as tree_to_petri
 
 
 def apply_im_plain(log, parameters):
@@ -39,3 +40,7 @@ def apply_im_plain(log, parameters):
     tree_repr = get_tree_repr_implain.get_repr(sub, 0, contains_empty_traces=contains_empty_traces)
     return tree_repr
 
+
+def apply_plain_petrinet(tree):
+
+    return tree_to_petri.apply(tree)

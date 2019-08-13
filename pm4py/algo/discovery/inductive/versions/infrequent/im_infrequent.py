@@ -8,6 +8,7 @@ from pm4py.algo.filtering.log.start_activities import start_activities_filter
 from pm4py.objects.log.util import xes as xes_util
 from pm4py.algo.discovery.dfg.versions import native as dfg_inst
 from pm4py.algo.discovery.inductive.versions.infrequent.data_structures import subtree_infrequent as subtree
+from pm4py.objects.conversion.process_tree import factory as tree_to_petri
 
 
 def apply_im_infrequent(log, f, parameters):
@@ -39,9 +40,13 @@ def apply_im_infrequent(log, f, parameters):
     threshold = f * max_value
 
     recursion_depth = 0
-    print('starting with dfg: ', dfg)
     sub = subtree.make_tree(log, dfg, dfg, dfg, activities, c, recursion_depth, f, threshold, start_activities, end_activities,
                             start_activities, end_activities)
 
     tree_repr = get_tree_repr_implain.get_repr(sub, 0, contains_empty_traces=contains_empty_traces)
     return tree_repr
+
+
+def apply_infrequent_petrinet(tree):
+    pn = tree_to_petri.apply(tree)
+    return pn
