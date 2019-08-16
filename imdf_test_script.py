@@ -13,15 +13,25 @@ from pm4py.algo.simulation.playout import factory as playout_factory
 from pm4py.algo.discovery.inductive.versions.infrequent.splitting_infrequent import show_nice_log as nice_log
 from pm4py.algo.conformance.alignments import factory as align_factory
 from pm4py.evaluation.replay_fitness import factory as fitness_factory
+from pm4py.evaluation.generalization import factory as generalization_factory
+from pm4py.evaluation.simplicity import factory as simple_factory
+from pm4py.evaluation.precision import factory as precision_factory
 
-
+"""
 # stream = csv_importer.import_event_stream(os.path.join("tests", "input_data", "im_plain-test.csv"))
 # log = conv_factory.apply(stream)
+log_abstracted = []
+for trace in log:
+    new_trace = []
+    for element in trace:
+        new_trace.append(element['concept:name'])
+    log_abstracted.append(new_trace)
+# print('starting with ', log_abstracted
+"""
 
-'''
 
 # run im.plain
-log = xes_import_factory.apply("tests\\compressed_input_data\\teleclaims.xes")
+log = xes_import_factory.apply("tests\\compressed_input_data\\running-example.xes")
 print('Länge des Logs: ', len(log))
 tree = imp.apply_im_plain(log, None)
 print(tree)
@@ -30,19 +40,19 @@ pt_vis_factory.view(gviz)
 net, initial_marking, final_marking = imp.apply_plain_petrinet(tree)
 fitness = fitness_factory.apply(log, net, initial_marking, final_marking)
 print('fitness: ', fitness)
+simplicity = simple_factory.apply(net)
+print('simplicity: ', simplicity)
+generalization = generalization_factory.apply(log,  net, initial_marking, final_marking)
+print('generalization: ', generalization)
+precision = precision_factory.apply(log, net, initial_marking, final_marking)
+print('precision: ', precision)
 
 
+'''
 # run im_infrequent:
 log = xes_import_factory.apply("tests\\compressed_input_data\\running-example.xes")
 # stream = csv_importer.import_event_stream(os.path.join("tests", "input_data", "test-infrequent_behaviour.csv"))
 # log = conv_factory.apply(stream)
-log_abstracted = []
-for trace in log:
-    new_trace = []
-    for element in trace:
-        new_trace.append(element['concept:name'])
-    log_abstracted.append(new_trace)
-# print('starting with ', log_abstracted)
 tree = imf.apply_im_infrequent(log, 0.15, None)
 print(tree)
 net, im, fm = imf.apply_infrequent_petrinet(tree)
@@ -53,7 +63,6 @@ joblib.dump(tree, "wabalabadubdub", compress=3)
 # gviz = pt_vis_factory.apply(tree)
 # pt_vis_factory.view(gviz)
 
-'''
 
 # run im.df
 log = xes_import_factory.apply("tests\\compressed_input_data\\running-example.xes")
@@ -75,3 +84,4 @@ print('aaaaaaa: ', alignments)
 #gviz = dfg_vis_factory.apply(dfg, log=log, variant="frequency")
 #dfg_vis_factory.view(gviz)
 
+'''
