@@ -433,7 +433,6 @@ class SubtreeInfrequent(object):
                     if removed:
                         break
 
-        iterable_dfg = []
         for i in range(0, len(self.dfg)):
             iterable_dfg.append(self.dfg[i][0])
 

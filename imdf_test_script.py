@@ -31,7 +31,9 @@ for trace in log:
 
 
 # run im.plain
-log = xes_import_factory.apply("tests\\compressed_input_data\\running-example.xes")
+# log = xes_import_factory.apply("tests\\compressed_input_data\\running-example.xes")
+stream = csv_importer.import_event_stream(os.path.join("tests", "input_data", "test-loop_cut2.csv"))
+log = conv_factory.apply(stream)
 print('Länge des Logs: ', len(log))
 tree = imp.apply_im_plain(log, None)
 print(tree)

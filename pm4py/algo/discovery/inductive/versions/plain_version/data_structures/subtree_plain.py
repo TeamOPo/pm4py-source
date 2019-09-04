@@ -402,9 +402,41 @@ class SubtreePlain(object):
                 current_activities.update({element: 1})
         p0 = get_connected_components(new_ingoing, new_outgoing, current_activities)
         p0.insert(0, p1)
-
+        iterable_dfg = []
+        for i in range(0, len(self.dfg)):
+            iterable_dfg.append(self.dfg[i][0])
         # p0 is like P1,P2,...,Pn in line 3 on page 190 of the IM Thesis
         # check for subsets in p0 that have connections to and end or from a start activity
+        p0_copy = deepcopy(p0)  # we use the bool removed to exit the nested loops once we removed an element
+        for element in p0_copy:  # for every set in p0
+            removed = False
+            if element in p0 and element != p0[0]:
+                for act in element:  # for every activity in this set
+                    for e in end_activities:  # for every end activity
+                        if (act, e) in iterable_dfg:  # check if connected
+                            # is there an element in dfg pointing from any act in a subset of p0 to an end activity
+                            for activ in element:
+                                if activ not in p0[0]:
+                                    p0[0].append(activ)
+                            p0.remove(element)  # remove subsets that are connected to an end activity
+                            removed = True
+                            break
+                    if removed:
+                        break
+                    for s in start_activities:
+                        if not removed:
+                            if (s, act) in iterable_dfg:
+                                for acti in element:
+                                    if acti not in p0[0]:
+                                        p0[0].append(acti)
+                                p0.remove(element)  # remove subsets that are connected to an end activity
+                                removed = True
+                                break
+                        else:
+                            break
+                    if removed:
+                        break
+        """                
         p0_copy = deepcopy(p0)            # we use the bool removed to exit the nested loops once we removed an element
         for element in p0_copy:                             # for every set in p0
             removed = False
@@ -436,7 +468,7 @@ class SubtreePlain(object):
                             break
                     if removed:
                         break
-
+        """
         iterable_dfg = list()
         for i in range(0, len(self.dfg)):
             iterable_dfg.append(self.dfg[i][0])
@@ -450,7 +482,7 @@ class SubtreePlain(object):
                                 if (e2, act) not in iterable_dfg:
                                     for acti in element:
                                         if acti not in p0[0]:
-                                            p0[0].add(acti)
+                                            p0[0].append(acti)
                                     p0.remove(element)              # remove subsets that are connected to an end activity
                                     break
                     for s in self.start_activities:
