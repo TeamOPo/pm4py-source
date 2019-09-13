@@ -14,7 +14,7 @@ def single_activity(log):
                     return False                # if there is a trace that has a length not equal to 1, we return false
 
             # check if all traces consist of the same activity, therefore create dfg from log and get activities of that dfg
-            print('detected single_activity ', first_activity)
+            # print('detected single_activity ', first_activity)
             return True
         else:
             return False

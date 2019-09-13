@@ -22,6 +22,7 @@ def apply_im_plain(log, parameters):
     activity_key = parameters[pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY]
     dfg = [(k, v) for k, v in dfg_inst.apply(log, parameters={
         pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
+    # print(dfg)
     c = Counts()
     noise_threshold = shared_constants.NOISE_THRESHOLD
     activity_key = xes_util.DEFAULT_NAME_KEY

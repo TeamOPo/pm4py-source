@@ -86,8 +86,9 @@ def get_repr(spec_tree_struct, rec_depth, contains_empty_traces=False):
             # add connection from child_tree to child_final and the other way around:
             final_tree_repr.children.append(child)
             child.parent = final_tree_repr
+
         if spec_tree_struct.detected_cut == "loopCut" and len(spec_tree_struct.children) < 3:
-            while len(spec_tree_struct.children) < 3:
+            while len(spec_tree_struct.children) < 2:
                 child = ProcessTree()
                 final_tree_repr.children.append(child)
                 child.parent = final_tree_repr
