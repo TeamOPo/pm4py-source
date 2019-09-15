@@ -99,6 +99,14 @@ def activity_concurrent(self, l, activities):
     empty_trace = log.Trace()
     for key, value in activities_copy.items():          # iterate through activities (saved in key)
         test_log = filter_activity_from_log(l, key)
+        # unsure about this one:
+        contains_empty_trace = False
+        for trace in test_log:
+            if len(trace) == 0:
+                contains_empty_trace = True
+        if contains_empty_trace:
+            break
+
         self_copy = deepcopy(self)
         cut = subtree.SubtreePlain.check_for_cut(self_copy, test_log, key)  # check if leaving out act, leads to finding cut
         if cut:
@@ -114,9 +122,9 @@ def activity_concurrent(self, l, activities):
                         break
                 if not contains_activity:
                     small_log.append(empty_trace)
-            return True, test_log, small_log                  # if so, return new log
+            return True, test_log, small_log, key                  # if so, return new log
 
-    return False, test_log, small_log      # if,  after iterating through all act's still no cut is found, return false
+    return False, test_log, small_log, key      # if,  after iterating through all act's still no cut is found, return false
 
 
 def split_between_end_and_start(trace, start_activities, end_activities):
@@ -129,8 +137,10 @@ def split_between_end_and_start(trace, start_activities, end_activities):
     while not found_split and i < len(trace)-1:
         if trace[i]['concept:name'] in end_activities and trace[i + 1]['concept:name'] in start_activities:
             found_split = True
-            for j in range(0, i):
+            j = 0
+            while j <= i:
                 new_trace_1.append(trace[j])
+                j +=1
             for k in range(i + 1, len(trace)):
                 new_trace_2.append(trace[k])
             break
@@ -155,12 +165,28 @@ def strict_tau_loop(l, start_activities, end_activities):
             new_log.append(trace)               # if there is nothing to split, append the whole trace
 
     if len(new_log) > len(l):
+        # print("Tau loop: ", show_nice_log(new_log))
         return True, new_log
     else:
         return False, new_log
 
 
 def split_before_start(trace, start_activities):
+    # if there is only one activity, there is nothing to split
+    if len(trace) == 1:
+        return trace, trace, False
+    """
+    # if there is no start activity (except for the first activity), there is nothing to split
+    p = 1
+    contains_start_activity = False
+    while p < len(trace):
+        if trace[p]['concept:name'] in start_activities:
+            contains_start_activity = True
+        p += 1
+    if not contains_start_activity:
+        return trace, trace, False
+    """
+    # if none of the above cases apply, we split at the occurence of a start activity
     found_split = False
     new_trace_1 = log.Trace()
     new_trace_2 = log.Trace()
@@ -185,8 +211,12 @@ def tau_loop(l, start_activities):
         if found_split and len(t2) != 0:
             new_log.append(t1)
             while found_split:
+                t2_backup = deepcopy(t2)
                 t1, t2, found_split = split_before_start(t2, start_activities)
-                new_log.append(t1)
+                if len(t1) != 0:
+                    new_log.append(t1)
+                else:
+                    new_log.append(t2_backup)
         else:
             new_log.append(trace)
 

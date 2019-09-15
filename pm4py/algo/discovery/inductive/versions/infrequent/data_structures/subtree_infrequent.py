@@ -445,7 +445,7 @@ class SubtreeInfrequent(object):
                                 if (e2, act) not in iterable_dfg:
                                     for acti in element:
                                         if acti not in p0[0]:
-                                            p0[0].add(acti)
+                                            p0[0].append(acti)
                                     p0.remove(element)              # remove subsets that are connected to an end activity
                                     break
                     for s in self.start_activities:
@@ -513,7 +513,7 @@ class SubtreeInfrequent(object):
 
     def apply_cut_im_plain(self, type_of_cut, cut, activity_key):
         if type_of_cut == 'concurrent':
-            print('plain cut: plain concurrent', cut[1])
+            # print('plain cut: plain concurrent', cut[1])
             self.detected_cut = 'concurrent'
             new_logs = split.split_xor(cut[1], self.log)
             # print('splitted to: ', self.show_split(new_logs))
@@ -535,7 +535,7 @@ class SubtreeInfrequent(object):
         elif type_of_cut == 'sequential':
             new_logs = split.split_sequence(cut[1], self.log)
             self.detected_cut = "sequential"
-            print('plain cut: sequence', cut[1])
+            # print('plain cut: sequence', cut[1])
             # print('splitted to: ', self.show_split(new_logs))
             for l in new_logs:
                 new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters={
@@ -555,7 +555,7 @@ class SubtreeInfrequent(object):
         elif type_of_cut == 'parallel':
             new_logs = split.split_parallel(cut[1], self.log)
             self.detected_cut = "parallel"
-            print('plain cut: parallel', cut[1])
+            # print('plain cut: parallel', cut[1])
             # print('splitted to: ', self.show_split(new_logs))
             for l in new_logs:
                 new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters={
@@ -575,7 +575,7 @@ class SubtreeInfrequent(object):
         elif type_of_cut == 'loopCut':
             new_logs = split.split_loop(cut[1], self.log)
             self.detected_cut = "loopCut"
-            print('plain cut: loop', cut[1])
+            # print('plain cut: loop', cut[1])
             # print('splitted to: ', self.show_split(new_logs))
             for l in new_logs:
                 new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters={
@@ -607,7 +607,7 @@ class SubtreeInfrequent(object):
         empty_log = base_case.empty_log(self.log)
         single_activity = base_case.single_activity(self.log)
         if empty_log:
-            print('detected empty_log')
+            # print('detected empty_log')
             self.detected_cut = 'empty_log'
         elif single_activity:
             self.detected_cut = 'single_activity'
@@ -616,21 +616,21 @@ class SubtreeInfrequent(object):
         else:
             found_plain_cut, type_of_cut, cut = self.check_cut_im_plain()
             if found_plain_cut:
-                print('found plain cut')
+                # print('found plain cut')
                 self.apply_cut_im_plain(type_of_cut, cut, activity_key)
             # if im_plain does not find a cut, we filter on our threshold and then again apply the im_cut detection
             # but this time, we have to use different splitting functions:
             else:
-                print('no plain cut found, filter dfg on threshold ', self.noise_threshold)
+                # print('no plain cut found, filter dfg on threshold ', self.noise_threshold)
                 self.filter_dfg_on_threshold()
-                print('filtered dfg: ', self.dfg)
+                # print('filtered dfg: ', self.dfg)
                 found_plain_cut, type_of_cut, cut = self.check_cut_im_plain()
                 if found_plain_cut:
                     if type_of_cut == 'concurrent':
-                        print('cut inf: concurrent', cut[1])
+                        # print('cut inf: concurrent', cut[1])
                         self.detected_cut = 'concurrent'
                         new_logs = splitting_infrequent.split_xor_infrequent(cut[1], self.log)
-                        #print('splitted to: ', self.show_split(new_logs))
+                        # print('splitted to: ', self.show_split(new_logs))
                         for l in new_logs:
                             new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters={
                                 pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
@@ -649,8 +649,8 @@ class SubtreeInfrequent(object):
                     elif type_of_cut == 'sequential':
                         new_logs = splitting_infrequent.split_sequence_infrequent(cut[1], self.log)
                         self.detected_cut = "sequential"
-                        print('cut inf: sequence', cut[1])
-                        #print('splitted to: ', self.show_split(new_logs))
+                        # print('cut inf: sequence', cut[1])
+                        # print('splitted to: ', self.show_split(new_logs))
                         for l in new_logs:
                             new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters={
                                 pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
@@ -669,8 +669,8 @@ class SubtreeInfrequent(object):
                     elif type_of_cut == 'parallel':
                         new_logs = split.split_parallel(cut[1], self.log)
                         self.detected_cut = "parallel"
-                        print('cut inf: parallel', cut[1])
-                        #print('splitted to: ', self.show_split(new_logs))
+                        # print('cut inf: parallel', cut[1])
+                        # print('splitted to: ', self.show_split(new_logs))
                         for l in new_logs:
                             new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters={
                                 pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
@@ -689,8 +689,8 @@ class SubtreeInfrequent(object):
                     elif type_of_cut == 'loopCut':
                         new_logs = splitting_infrequent.split_loop_infrequent(cut[1], self.log)
                         self.detected_cut = "loopCut"
-                        print('cut inf: loop', cut[1])
-                        #print('splitted to: ', self.show_split(new_logs))
+                        # print('cut inf: loop', cut[1])
+                        # print('splitted to: ', self.show_split(new_logs))
                         for l in new_logs:
                             new_dfg = [(k, v) for k, v in dfg_inst.apply(l, parameters={
                                 pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
@@ -725,7 +725,7 @@ class SubtreeInfrequent(object):
         self.log = new_log
         # if an empty trace is found, the empty trace fallthrough applies
         if empty_traces_present and enough_traces:
-            print('empty trace_if fall through')
+            # print('empty trace_if fall through')
             self.detected_cut = 'empty_trace'
             new_dfg = [(k, v) for k, v in dfg_inst.apply(new_log, parameters={
                 pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if v > 0]
@@ -738,12 +738,13 @@ class SubtreeInfrequent(object):
                              initial_end_activities=self.initial_end_activities))
         elif empty_traces_present and not enough_traces:
             # no node is added to the PT, instead we just use recursion on the log without the empty traces
+            # print('found empty trace, but not enough. Continue with: ', self.show_nice_log(self.log))
             self.detect_cut_if()
         else:
             activity_once, new_log, small_log = fall_through.act_once_per_trace(self.log, self.activities)
             if activity_once:
                 nice_small_log = self.show_nice_log(small_log)
-                print('activity once fallthrough ', nice_small_log)
+                # print('activity once fallthrough ', nice_small_log)
                 self.detected_cut = 'parallel'
                 # create two new dfgs as we need them to append to self.children later
                 new_dfg = [(k, v) for k, v in dfg_inst.apply(new_log, parameters={
@@ -772,10 +773,10 @@ class SubtreeInfrequent(object):
                                  initial_end_activities=self.initial_end_activities))
 
             else:
-                activity_concurrent, new_log, small_log = fall_through.activity_concurrent(self, self.log, self.activities)
+                activity_concurrent, new_log, small_log, key = fall_through.activity_concurrent(self, self.log, self.activities)
                 if activity_concurrent:
                     nice_small_log = self.show_nice_log(small_log)
-                    print('activity concurrent fallthrough ', nice_small_log)
+                    # print('activity concurrent fallthrough ', key)
                     self.detected_cut = 'parallel'
                     # create two new dfgs on to append later
                     new_dfg = [(k, v) for k, v in dfg_inst.apply(new_log, parameters={
@@ -807,7 +808,7 @@ class SubtreeInfrequent(object):
                 else:
                     strict_tau_loop, new_log = fall_through.strict_tau_loop(self.log, self.start_activities, self.end_activities)
                     if strict_tau_loop:
-                        print('strict_tau-loop fallthrough')
+                        # print('strict_tau-loop fallthrough')
                         self.detected_cut = 'strict_tau_loop'
                         new_dfg = [(k, v) for k, v in dfg_inst.apply(new_log, parameters={
                             pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if
@@ -824,7 +825,7 @@ class SubtreeInfrequent(object):
                     else:
                         tau_loop, new_log = fall_through.tau_loop(self.log, self.start_activities)
                         if tau_loop:
-                            print('tau-loop fall through')
+                            # print('tau-loop fall through')
                             self.detected_cut = 'tau_loop'
                             new_dfg = [(k, v) for k, v in dfg_inst.apply(new_log, parameters={
                                 pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY: activity_key}).items() if
@@ -839,7 +840,7 @@ class SubtreeInfrequent(object):
                                              initial_start_activities=self.initial_start_activities,
                                              initial_end_activities=self.initial_end_activities))
                         else:
-                            print('flower-fallthrough:')
+                            # print('flower-fallthrough:')
                             self.detected_cut = 'flower'
                             # apply flower fall through as last option:
 

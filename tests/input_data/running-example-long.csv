@@ -1,0 +1,385 @@
+Activity,Costs,Resource,case:concept:name,case:creator,concept:name,org:resource,time:timestamp
+register request,50,Pete,1,Fluxicon Nitro,register request,Pete,30.12.2010 11:02
+examine thoroughly,400,Sue,1,Fluxicon Nitro,examine thoroughly,Sue,31.12.2010 10:06
+check ticket,100,Mike,1,Fluxicon Nitro,check ticket,Mike,05.01.2011 15:12
+decide,200,Sara,1,Fluxicon Nitro,decide,Sara,06.01.2011 11:18
+reject request,200,Pete,1,Fluxicon Nitro,reject request,Pete,07.01.2011 14:24
+register request,50,Mike,2,Fluxicon Nitro,register request,Mike,30.12.2010 11:32
+check ticket,100,Mike,2,Fluxicon Nitro,check ticket,Mike,30.12.2010 12:12
+examine casually,400,Sean,2,Fluxicon Nitro,examine casually,Sean,30.12.2010 14:16
+decide,200,Sara,2,Fluxicon Nitro,decide,Sara,05.01.2011 11:22
+pay compensation,200,Ellen,2,Fluxicon Nitro,pay compensation,Ellen,08.01.2011 12:05
+register request,50,Pete,3,Fluxicon Nitro,register request,Pete,30.12.2010 14:32
+examine casually,400,Mike,3,Fluxicon Nitro,examine casually,Mike,30.12.2010 15:06
+check ticket,100,Ellen,3,Fluxicon Nitro,check ticket,Ellen,30.12.2010 16:34
+decide,200,Sara,3,Fluxicon Nitro,decide,Sara,06.01.2011 09:18
+reinitiate request,200,Sara,3,Fluxicon Nitro,reinitiate request,Sara,06.01.2011 12:18
+examine thoroughly,400,Sean,3,Fluxicon Nitro,examine thoroughly,Sean,06.01.2011 13:06
+check ticket,100,Pete,3,Fluxicon Nitro,check ticket,Pete,08.01.2011 11:43
+decide,200,Sara,3,Fluxicon Nitro,decide,Sara,09.01.2011 09:55
+pay compensation,200,Ellen,3,Fluxicon Nitro,pay compensation,Ellen,15.01.2011 10:45
+register request,50,Pete,4,Fluxicon Nitro,register request,Pete,06.01.2011 15:02
+check ticket,100,Mike,4,Fluxicon Nitro,check ticket,Mike,07.01.2011 12:06
+examine thoroughly,400,Sean,4,Fluxicon Nitro,examine thoroughly,Sean,08.01.2011 14:43
+decide,200,Sara,4,Fluxicon Nitro,decide,Sara,09.01.2011 12:02
+reject request,200,Ellen,4,Fluxicon Nitro,reject request,Ellen,12.01.2011 15:44
+register request,50,Ellen,5,Fluxicon Nitro,register request,Ellen,06.01.2011 09:02
+examine casually,400,Mike,5,Fluxicon Nitro,examine casually,Mike,07.01.2011 10:16
+check ticket,100,Pete,5,Fluxicon Nitro,check ticket,Pete,08.01.2011 11:22
+decide,200,Sara,5,Fluxicon Nitro,decide,Sara,10.01.2011 13:28
+reinitiate request,200,Sara,5,Fluxicon Nitro,reinitiate request,Sara,11.01.2011 16:18
+check ticket,100,Ellen,5,Fluxicon Nitro,check ticket,Ellen,14.01.2011 14:33
+examine casually,400,Mike,5,Fluxicon Nitro,examine casually,Mike,16.01.2011 15:50
+decide,200,Sara,5,Fluxicon Nitro,decide,Sara,19.01.2011 11:18
+reinitiate request,200,Sara,5,Fluxicon Nitro,reinitiate request,Sara,20.01.2011 12:48
+examine casually,400,Sue,5,Fluxicon Nitro,examine casually,Sue,21.01.2011 09:06
+check ticket,100,Pete,5,Fluxicon Nitro,check ticket,Pete,21.01.2011 11:34
+decide,200,Sara,5,Fluxicon Nitro,decide,Sara,23.01.2011 13:12
+reject request,200,Mike,5,Fluxicon Nitro,reject request,Mike,24.01.2011 14:56
+register request,50,Mike,6,Fluxicon Nitro,register request,Mike,06.01.2011 15:02
+examine casually,400,Ellen,6,Fluxicon Nitro,examine casually,Ellen,06.01.2011 16:06
+check ticket,100,Mike,6,Fluxicon Nitro,check ticket,Mike,07.01.2011 16:22
+decide,200,Sara,6,Fluxicon Nitro,decide,Sara,07.01.2011 16:52
+pay compensation,200,Mike,6,Fluxicon Nitro,pay compensation,Mike,16.01.2011 11:47
+register request,50,Pete,51,Fluxicon Nitro,register request,Pete,30.12.2010 14:32
+examine casually,400,Mike,51,Fluxicon Nitro,examine casually,Mike,30.12.2010 15:06
+check ticket,100,Ellen,51,Fluxicon Nitro,check ticket,Ellen,30.12.2010 16:34
+decide,200,Sara,51,Fluxicon Nitro,decide,Sara,06.01.2011 09:18
+reinitiate request,200,Sara,51,Fluxicon Nitro,reinitiate request,Sara,06.01.2011 12:18
+examine thoroughly,400,Sean,51,Fluxicon Nitro,examine thoroughly,Sean,06.01.2011 13:06
+check ticket,100,Pete,51,Fluxicon Nitro,check ticket,Pete,08.01.2011 11:43
+decide,200,Sara,51,Fluxicon Nitro,decide,Sara,09.01.2011 09:55
+pay compensation,200,Ellen,51,Fluxicon Nitro,pay compensation,Ellen,15.01.2011 10:45
+register request,50,Pete,7,Fluxicon Nitro,register request,Pete,30.12.2010 14:32
+examine casually,400,Mike,7,Fluxicon Nitro,examine casually,Mike,30.12.2010 15:06
+check ticket,100,Ellen,7,Fluxicon Nitro,check ticket,Ellen,30.12.2010 16:34
+decide,200,Sara,7,Fluxicon Nitro,decide,Sara,06.01.2011 09:18
+reinitiate request,200,Sara,7,Fluxicon Nitro,reinitiate request,Sara,06.01.2011 12:18
+examine thoroughly,400,Sean,7,Fluxicon Nitro,examine thoroughly,Sean,06.01.2011 13:06
+check ticket,100,Pete,7,Fluxicon Nitro,check ticket,Pete,08.01.2011 11:43
+decide,200,Sara,7,Fluxicon Nitro,decide,Sara,09.01.2011 09:55
+pay compensation,200,Ellen,7,Fluxicon Nitro,pay compensation,Ellen,15.01.2011 10:45
+register request,50,Pete,8,Fluxicon Nitro,register request,Pete,30.12.2010 14:32
+examine casually,400,Mike,8,Fluxicon Nitro,examine casually,Mike,30.12.2010 15:06
+check ticket,100,Ellen,8,Fluxicon Nitro,check ticket,Ellen,30.12.2010 16:34
+decide,200,Sara,8,Fluxicon Nitro,decide,Sara,06.01.2011 09:18
+reinitiate request,200,Sara,8,Fluxicon Nitro,reinitiate request,Sara,06.01.2011 12:18
+examine thoroughly,400,Sean,8,Fluxicon Nitro,examine thoroughly,Sean,06.01.2011 13:06
+check ticket,100,Pete,8,Fluxicon Nitro,check ticket,Pete,08.01.2011 11:43
+decide,200,Sara,8,Fluxicon Nitro,decide,Sara,09.01.2011 09:55
+pay compensation,200,Ellen,8,Fluxicon Nitro,pay compensation,Ellen,15.01.2011 10:45
+register request,50,Pete,9,Fluxicon Nitro,register request,Pete,30.12.2010 14:32
+examine casually,400,Mike,9,Fluxicon Nitro,examine casually,Mike,30.12.2010 15:06
+check ticket,100,Ellen,9,Fluxicon Nitro,check ticket,Ellen,30.12.2010 16:34
+decide,200,Sara,9,Fluxicon Nitro,decide,Sara,06.01.2011 09:18
+reinitiate request,200,Sara,9,Fluxicon Nitro,reinitiate request,Sara,06.01.2011 12:18
+examine thoroughly,400,Sean,9,Fluxicon Nitro,examine thoroughly,Sean,06.01.2011 13:06
+check ticket,100,Pete,9,Fluxicon Nitro,check ticket,Pete,08.01.2011 11:43
+decide,200,Sara,9,Fluxicon Nitro,decide,Sara,09.01.2011 09:55
+pay compensation,200,Ellen,9,Fluxicon Nitro,pay compensation,Ellen,15.01.2011 10:45
+register request,50,Pete,10,Fluxicon Nitro,register request,Pete,30.12.2010 14:32
+examine casually,400,Mike,10,Fluxicon Nitro,examine casually,Mike,30.12.2010 15:06
+check ticket,100,Ellen,10,Fluxicon Nitro,check ticket,Ellen,30.12.2010 16:34
+decide,200,Sara,10,Fluxicon Nitro,decide,Sara,06.01.2011 09:18
+reinitiate request,200,Sara,10,Fluxicon Nitro,reinitiate request,Sara,06.01.2011 12:18
+examine thoroughly,400,Sean,10,Fluxicon Nitro,examine thoroughly,Sean,06.01.2011 13:06
+check ticket,100,Pete,10,Fluxicon Nitro,check ticket,Pete,08.01.2011 11:43
+decide,200,Sara,10,Fluxicon Nitro,decide,Sara,09.01.2011 09:55
+pay compensation,200,Ellen,10,Fluxicon Nitro,pay compensation,Ellen,15.01.2011 10:45
+register request,50,Pete,11,Fluxicon Nitro,register request,Pete,30.12.2010 14:32
+examine casually,400,Mike,11,Fluxicon Nitro,examine casually,Mike,30.12.2010 15:06
+check ticket,100,Ellen,11,Fluxicon Nitro,check ticket,Ellen,30.12.2010 16:34
+decide,200,Sara,11,Fluxicon Nitro,decide,Sara,06.01.2011 09:18
+reinitiate request,200,Sara,11,Fluxicon Nitro,reinitiate request,Sara,06.01.2011 12:18
+examine thoroughly,400,Sean,11,Fluxicon Nitro,examine thoroughly,Sean,06.01.2011 13:06
+check ticket,100,Pete,11,Fluxicon Nitro,check ticket,Pete,08.01.2011 11:43
+decide,200,Sara,11,Fluxicon Nitro,decide,Sara,09.01.2011 09:55
+pay compensation,200,Ellen,11,Fluxicon Nitro,pay compensation,Ellen,15.01.2011 10:45
+register request,50,Pete,12,Fluxicon Nitro,register request,Pete,30.12.2010 14:32
+examine casually,400,Mike,12,Fluxicon Nitro,examine casually,Mike,30.12.2010 15:06
+check ticket,100,Ellen,12,Fluxicon Nitro,check ticket,Ellen,30.12.2010 16:34
+decide,200,Sara,12,Fluxicon Nitro,decide,Sara,06.01.2011 09:18
+reinitiate request,200,Sara,12,Fluxicon Nitro,reinitiate request,Sara,06.01.2011 12:18
+examine thoroughly,400,Sean,12,Fluxicon Nitro,examine thoroughly,Sean,06.01.2011 13:06
+check ticket,100,Pete,12,Fluxicon Nitro,check ticket,Pete,08.01.2011 11:43
+decide,200,Sara,12,Fluxicon Nitro,decide,Sara,09.01.2011 09:55
+pay compensation,200,Ellen,12,Fluxicon Nitro,pay compensation,Ellen,15.01.2011 10:45
+register request,50,Pete,13,Fluxicon Nitro,register request,Pete,30.12.2010 14:32
+examine casually,400,Mike,13,Fluxicon Nitro,examine casually,Mike,30.12.2010 15:06
+check ticket,100,Ellen,13,Fluxicon Nitro,check ticket,Ellen,30.12.2010 16:34
+decide,200,Sara,13,Fluxicon Nitro,decide,Sara,06.01.2011 09:18
+reinitiate request,200,Sara,13,Fluxicon Nitro,reinitiate request,Sara,06.01.2011 12:18
+examine thoroughly,400,Sean,13,Fluxicon Nitro,examine thoroughly,Sean,06.01.2011 13:06
+check ticket,100,Pete,13,Fluxicon Nitro,check ticket,Pete,08.01.2011 11:43
+decide,200,Sara,13,Fluxicon Nitro,decide,Sara,09.01.2011 09:55
+pay compensation,200,Ellen,13,Fluxicon Nitro,pay compensation,Ellen,15.01.2011 10:45
+register request,50,Pete,14,Fluxicon Nitro,register request,Pete,30.12.2010 14:32
+examine casually,400,Mike,14,Fluxicon Nitro,examine casually,Mike,30.12.2010 15:06
+check ticket,100,Ellen,14,Fluxicon Nitro,check ticket,Ellen,30.12.2010 16:34
+decide,200,Sara,14,Fluxicon Nitro,decide,Sara,06.01.2011 09:18
+reinitiate request,200,Sara,14,Fluxicon Nitro,reinitiate request,Sara,06.01.2011 12:18
+examine thoroughly,400,Sean,14,Fluxicon Nitro,examine thoroughly,Sean,06.01.2011 13:06
+check ticket,100,Pete,14,Fluxicon Nitro,check ticket,Pete,08.01.2011 11:43
+decide,200,Sara,14,Fluxicon Nitro,decide,Sara,09.01.2011 09:55
+pay compensation,200,Ellen,14,Fluxicon Nitro,pay compensation,Ellen,15.01.2011 10:45
+register request,50,Pete,15,Fluxicon Nitro,register request,Pete,30.12.2010 14:32
+examine casually,400,Mike,15,Fluxicon Nitro,examine casually,Mike,30.12.2010 15:06
+check ticket,100,Ellen,15,Fluxicon Nitro,check ticket,Ellen,30.12.2010 16:34
+decide,200,Sara,15,Fluxicon Nitro,decide,Sara,06.01.2011 09:18
+reinitiate request,200,Sara,15,Fluxicon Nitro,reinitiate request,Sara,06.01.2011 12:18
+examine thoroughly,400,Sean,15,Fluxicon Nitro,examine thoroughly,Sean,06.01.2011 13:06
+check ticket,100,Pete,15,Fluxicon Nitro,check ticket,Pete,08.01.2011 11:43
+decide,200,Sara,15,Fluxicon Nitro,decide,Sara,09.01.2011 09:55
+pay compensation,200,Ellen,15,Fluxicon Nitro,pay compensation,Ellen,15.01.2011 10:45
+register request,50,Pete,16,Fluxicon Nitro,register request,Pete,30.12.2010 11:02
+examine thoroughly,400,Sue,16,Fluxicon Nitro,examine thoroughly,Sue,31.12.2010 10:06
+check ticket,100,Mike,16,Fluxicon Nitro,check ticket,Mike,05.01.2011 15:12
+decide,200,Sara,16,Fluxicon Nitro,decide,Sara,06.01.2011 11:18
+reject request,200,Pete,16,Fluxicon Nitro,reject request,Pete,07.01.2011 14:24
+register request,50,Pete,17,Fluxicon Nitro,register request,Pete,30.12.2010 11:02
+examine thoroughly,400,Sue,17,Fluxicon Nitro,examine thoroughly,Sue,31.12.2010 10:06
+check ticket,100,Mike,17,Fluxicon Nitro,check ticket,Mike,05.01.2011 15:12
+decide,200,Sara,17,Fluxicon Nitro,decide,Sara,06.01.2011 11:18
+reject request,200,Pete,17,Fluxicon Nitro,reject request,Pete,07.01.2011 14:24
+register request,50,Pete,18,Fluxicon Nitro,register request,Pete,30.12.2010 11:02
+examine thoroughly,400,Sue,18,Fluxicon Nitro,examine thoroughly,Sue,31.12.2010 10:06
+check ticket,100,Mike,18,Fluxicon Nitro,check ticket,Mike,05.01.2011 15:12
+decide,200,Sara,18,Fluxicon Nitro,decide,Sara,06.01.2011 11:18
+reject request,200,Pete,18,Fluxicon Nitro,reject request,Pete,07.01.2011 14:24
+register request,50,Pete,19,Fluxicon Nitro,register request,Pete,30.12.2010 11:02
+examine thoroughly,400,Sue,19,Fluxicon Nitro,examine thoroughly,Sue,31.12.2010 10:06
+check ticket,100,Mike,19,Fluxicon Nitro,check ticket,Mike,05.01.2011 15:12
+decide,200,Sara,19,Fluxicon Nitro,decide,Sara,06.01.2011 11:18
+reject request,200,Pete,19,Fluxicon Nitro,reject request,Pete,07.01.2011 14:24
+register request,50,Pete,20,Fluxicon Nitro,register request,Pete,30.12.2010 11:02
+examine thoroughly,400,Sue,20,Fluxicon Nitro,examine thoroughly,Sue,31.12.2010 10:06
+check ticket,100,Mike,20,Fluxicon Nitro,check ticket,Mike,05.01.2011 15:12
+decide,200,Sara,20,Fluxicon Nitro,decide,Sara,06.01.2011 11:18
+reject request,200,Pete,20,Fluxicon Nitro,reject request,Pete,07.01.2011 14:24
+register request,50,Pete,21,Fluxicon Nitro,register request,Pete,30.12.2010 11:02
+examine thoroughly,400,Sue,21,Fluxicon Nitro,examine thoroughly,Sue,31.12.2010 10:06
+check ticket,100,Mike,21,Fluxicon Nitro,check ticket,Mike,05.01.2011 15:12
+decide,200,Sara,21,Fluxicon Nitro,decide,Sara,06.01.2011 11:18
+reject request,200,Pete,21,Fluxicon Nitro,reject request,Pete,07.01.2011 14:24
+register request,50,Pete,22,Fluxicon Nitro,register request,Pete,30.12.2010 11:02
+examine thoroughly,400,Sue,22,Fluxicon Nitro,examine thoroughly,Sue,31.12.2010 10:06
+check ticket,100,Mike,22,Fluxicon Nitro,check ticket,Mike,05.01.2011 15:12
+decide,200,Sara,22,Fluxicon Nitro,decide,Sara,06.01.2011 11:18
+reject request,200,Pete,22,Fluxicon Nitro,reject request,Pete,07.01.2011 14:24
+register request,50,Pete,23,Fluxicon Nitro,register request,Pete,30.12.2010 11:02
+examine thoroughly,400,Sue,23,Fluxicon Nitro,examine thoroughly,Sue,31.12.2010 10:06
+check ticket,100,Mike,23,Fluxicon Nitro,check ticket,Mike,05.01.2011 15:12
+decide,200,Sara,23,Fluxicon Nitro,decide,Sara,06.01.2011 11:18
+reject request,200,Pete,23,Fluxicon Nitro,reject request,Pete,07.01.2011 14:24
+register request,50,Pete,24,Fluxicon Nitro,register request,Pete,30.12.2010 11:02
+examine thoroughly,400,Sue,24,Fluxicon Nitro,examine thoroughly,Sue,31.12.2010 10:06
+check ticket,100,Mike,24,Fluxicon Nitro,check ticket,Mike,05.01.2011 15:12
+decide,200,Sara,24,Fluxicon Nitro,decide,Sara,06.01.2011 11:18
+reject request,200,Pete,24,Fluxicon Nitro,reject request,Pete,07.01.2011 14:24
+register request,50,Mike,25,Fluxicon Nitro,register request,Mike,30.12.2010 11:32
+check ticket,100,Mike,25,Fluxicon Nitro,check ticket,Mike,30.12.2010 12:12
+examine casually,400,Sean,25,Fluxicon Nitro,examine casually,Sean,30.12.2010 14:16
+decide,200,Sara,25,Fluxicon Nitro,decide,Sara,05.01.2011 11:22
+pay compensation,200,Ellen,25,Fluxicon Nitro,pay compensation,Ellen,08.01.2011 12:05
+register request,50,Mike,26,Fluxicon Nitro,register request,Mike,30.12.2010 11:32
+check ticket,100,Mike,26,Fluxicon Nitro,check ticket,Mike,30.12.2010 12:12
+examine casually,400,Sean,26,Fluxicon Nitro,examine casually,Sean,30.12.2010 14:16
+decide,200,Sara,26,Fluxicon Nitro,decide,Sara,05.01.2011 11:22
+pay compensation,200,Ellen,26,Fluxicon Nitro,pay compensation,Ellen,08.01.2011 12:05
+register request,50,Mike,27,Fluxicon Nitro,register request,Mike,30.12.2010 11:32
+check ticket,100,Mike,27,Fluxicon Nitro,check ticket,Mike,30.12.2010 12:12
+examine casually,400,Sean,27,Fluxicon Nitro,examine casually,Sean,30.12.2010 14:16
+decide,200,Sara,27,Fluxicon Nitro,decide,Sara,05.01.2011 11:22
+pay compensation,200,Ellen,27,Fluxicon Nitro,pay compensation,Ellen,08.01.2011 12:05
+register request,50,Mike,28,Fluxicon Nitro,register request,Mike,30.12.2010 11:32
+check ticket,100,Mike,28,Fluxicon Nitro,check ticket,Mike,30.12.2010 12:12
+examine casually,400,Sean,28,Fluxicon Nitro,examine casually,Sean,30.12.2010 14:16
+decide,200,Sara,28,Fluxicon Nitro,decide,Sara,05.01.2011 11:22
+pay compensation,200,Ellen,28,Fluxicon Nitro,pay compensation,Ellen,08.01.2011 12:05
+register request,50,Mike,29,Fluxicon Nitro,register request,Mike,30.12.2010 11:32
+check ticket,100,Mike,29,Fluxicon Nitro,check ticket,Mike,30.12.2010 12:12
+examine casually,400,Sean,29,Fluxicon Nitro,examine casually,Sean,30.12.2010 14:16
+decide,200,Sara,29,Fluxicon Nitro,decide,Sara,05.01.2011 11:22
+pay compensation,200,Ellen,29,Fluxicon Nitro,pay compensation,Ellen,08.01.2011 12:05
+register request,50,Mike,30,Fluxicon Nitro,register request,Mike,30.12.2010 11:32
+check ticket,100,Mike,30,Fluxicon Nitro,check ticket,Mike,30.12.2010 12:12
+examine casually,400,Sean,30,Fluxicon Nitro,examine casually,Sean,30.12.2010 14:16
+decide,200,Sara,30,Fluxicon Nitro,decide,Sara,05.01.2011 11:22
+pay compensation,200,Ellen,30,Fluxicon Nitro,pay compensation,Ellen,08.01.2011 12:05
+register request,50,Mike,31,Fluxicon Nitro,register request,Mike,30.12.2010 11:32
+check ticket,100,Mike,31,Fluxicon Nitro,check ticket,Mike,30.12.2010 12:12
+examine casually,400,Sean,31,Fluxicon Nitro,examine casually,Sean,30.12.2010 14:16
+decide,200,Sara,31,Fluxicon Nitro,decide,Sara,05.01.2011 11:22
+pay compensation,200,Ellen,31,Fluxicon Nitro,pay compensation,Ellen,08.01.2011 12:05
+register request,50,Mike,32,Fluxicon Nitro,register request,Mike,30.12.2010 11:32
+check ticket,100,Mike,32,Fluxicon Nitro,check ticket,Mike,30.12.2010 12:12
+examine casually,400,Sean,32,Fluxicon Nitro,examine casually,Sean,30.12.2010 14:16
+decide,200,Sara,32,Fluxicon Nitro,decide,Sara,05.01.2011 11:22
+pay compensation,200,Ellen,32,Fluxicon Nitro,pay compensation,Ellen,08.01.2011 12:05
+register request,50,Mike,33,Fluxicon Nitro,register request,Mike,30.12.2010 11:32
+check ticket,100,Mike,33,Fluxicon Nitro,check ticket,Mike,30.12.2010 12:12
+examine casually,400,Sean,33,Fluxicon Nitro,examine casually,Sean,30.12.2010 14:16
+decide,200,Sara,33,Fluxicon Nitro,decide,Sara,05.01.2011 11:22
+pay compensation,200,Ellen,33,Fluxicon Nitro,pay compensation,Ellen,08.01.2011 12:05
+register request,50,Mike,34,Fluxicon Nitro,register request,Mike,30.12.2010 11:32
+check ticket,100,Mike,34,Fluxicon Nitro,check ticket,Mike,30.12.2010 12:12
+examine casually,400,Sean,34,Fluxicon Nitro,examine casually,Sean,30.12.2010 14:16
+decide,200,Sara,34,Fluxicon Nitro,decide,Sara,05.01.2011 11:22
+pay compensation,200,Ellen,34,Fluxicon Nitro,pay compensation,Ellen,08.01.2011 12:05
+register request,50,Pete,35,Fluxicon Nitro,register request,Pete,06.01.2011 15:02
+check ticket,100,Mike,35,Fluxicon Nitro,check ticket,Mike,07.01.2011 12:06
+examine thoroughly,400,Sean,35,Fluxicon Nitro,examine thoroughly,Sean,08.01.2011 14:43
+decide,200,Sara,35,Fluxicon Nitro,decide,Sara,09.01.2011 12:02
+reject request,200,Ellen,35,Fluxicon Nitro,reject request,Ellen,12.01.2011 15:44
+register request,50,Pete,36,Fluxicon Nitro,register request,Pete,06.01.2011 15:02
+check ticket,100,Mike,36,Fluxicon Nitro,check ticket,Mike,07.01.2011 12:06
+examine thoroughly,400,Sean,36,Fluxicon Nitro,examine thoroughly,Sean,08.01.2011 14:43
+decide,200,Sara,36,Fluxicon Nitro,decide,Sara,09.01.2011 12:02
+reject request,200,Ellen,36,Fluxicon Nitro,reject request,Ellen,12.01.2011 15:44
+register request,50,Pete,37,Fluxicon Nitro,register request,Pete,06.01.2011 15:02
+check ticket,100,Mike,37,Fluxicon Nitro,check ticket,Mike,07.01.2011 12:06
+examine thoroughly,400,Sean,37,Fluxicon Nitro,examine thoroughly,Sean,08.01.2011 14:43
+decide,200,Sara,37,Fluxicon Nitro,decide,Sara,09.01.2011 12:02
+reject request,200,Ellen,37,Fluxicon Nitro,reject request,Ellen,12.01.2011 15:44
+register request,50,Pete,38,Fluxicon Nitro,register request,Pete,06.01.2011 15:02
+check ticket,100,Mike,38,Fluxicon Nitro,check ticket,Mike,07.01.2011 12:06
+examine thoroughly,400,Sean,38,Fluxicon Nitro,examine thoroughly,Sean,08.01.2011 14:43
+decide,200,Sara,38,Fluxicon Nitro,decide,Sara,09.01.2011 12:02
+reject request,200,Ellen,38,Fluxicon Nitro,reject request,Ellen,12.01.2011 15:44
+register request,50,Pete,39,Fluxicon Nitro,register request,Pete,06.01.2011 15:02
+check ticket,100,Mike,39,Fluxicon Nitro,check ticket,Mike,07.01.2011 12:06
+examine thoroughly,400,Sean,39,Fluxicon Nitro,examine thoroughly,Sean,08.01.2011 14:43
+decide,200,Sara,39,Fluxicon Nitro,decide,Sara,09.01.2011 12:02
+reject request,200,Ellen,39,Fluxicon Nitro,reject request,Ellen,12.01.2011 15:44
+register request,50,Pete,40,Fluxicon Nitro,register request,Pete,06.01.2011 15:02
+check ticket,100,Mike,40,Fluxicon Nitro,check ticket,Mike,07.01.2011 12:06
+examine thoroughly,400,Sean,40,Fluxicon Nitro,examine thoroughly,Sean,08.01.2011 14:43
+decide,200,Sara,40,Fluxicon Nitro,decide,Sara,09.01.2011 12:02
+reject request,200,Ellen,40,Fluxicon Nitro,reject request,Ellen,12.01.2011 15:44
+register request,50,Pete,41,Fluxicon Nitro,register request,Pete,06.01.2011 15:02
+check ticket,100,Mike,41,Fluxicon Nitro,check ticket,Mike,07.01.2011 12:06
+examine thoroughly,400,Sean,41,Fluxicon Nitro,examine thoroughly,Sean,08.01.2011 14:43
+decide,200,Sara,41,Fluxicon Nitro,decide,Sara,09.01.2011 12:02
+reject request,200,Ellen,41,Fluxicon Nitro,reject request,Ellen,12.01.2011 15:44
+register request,50,Pete,42,Fluxicon Nitro,register request,Pete,06.01.2011 15:02
+check ticket,100,Mike,42,Fluxicon Nitro,check ticket,Mike,07.01.2011 12:06
+examine thoroughly,400,Sean,42,Fluxicon Nitro,examine thoroughly,Sean,08.01.2011 14:43
+decide,200,Sara,42,Fluxicon Nitro,decide,Sara,09.01.2011 12:02
+reject request,200,Ellen,42,Fluxicon Nitro,reject request,Ellen,12.01.2011 15:44
+register request,50,Ellen,43,Fluxicon Nitro,register request,Ellen,06.01.2011 09:02
+examine casually,400,Mike,43,Fluxicon Nitro,examine casually,Mike,07.01.2011 10:16
+check ticket,100,Pete,43,Fluxicon Nitro,check ticket,Pete,08.01.2011 11:22
+decide,200,Sara,43,Fluxicon Nitro,decide,Sara,10.01.2011 13:28
+reinitiate request,200,Sara,43,Fluxicon Nitro,reinitiate request,Sara,11.01.2011 16:18
+check ticket,100,Ellen,43,Fluxicon Nitro,check ticket,Ellen,14.01.2011 14:33
+examine casually,400,Mike,43,Fluxicon Nitro,examine casually,Mike,16.01.2011 15:50
+decide,200,Sara,43,Fluxicon Nitro,decide,Sara,19.01.2011 11:18
+reinitiate request,200,Sara,43,Fluxicon Nitro,reinitiate request,Sara,20.01.2011 12:48
+examine casually,400,Sue,43,Fluxicon Nitro,examine casually,Sue,21.01.2011 09:06
+check ticket,100,Pete,43,Fluxicon Nitro,check ticket,Pete,21.01.2011 11:34
+decide,200,Sara,43,Fluxicon Nitro,decide,Sara,23.01.2011 13:12
+reject request,200,Mike,43,Fluxicon Nitro,reject request,Mike,24.01.2011 14:56
+register request,50,Ellen,44,Fluxicon Nitro,register request,Ellen,06.01.2011 09:02
+examine casually,400,Mike,44,Fluxicon Nitro,examine casually,Mike,07.01.2011 10:16
+check ticket,100,Pete,44,Fluxicon Nitro,check ticket,Pete,08.01.2011 11:22
+decide,200,Sara,44,Fluxicon Nitro,decide,Sara,10.01.2011 13:28
+reinitiate request,200,Sara,44,Fluxicon Nitro,reinitiate request,Sara,11.01.2011 16:18
+check ticket,100,Ellen,44,Fluxicon Nitro,check ticket,Ellen,14.01.2011 14:33
+examine casually,400,Mike,44,Fluxicon Nitro,examine casually,Mike,16.01.2011 15:50
+decide,200,Sara,44,Fluxicon Nitro,decide,Sara,19.01.2011 11:18
+reinitiate request,200,Sara,44,Fluxicon Nitro,reinitiate request,Sara,20.01.2011 12:48
+examine casually,400,Sue,44,Fluxicon Nitro,examine casually,Sue,21.01.2011 09:06
+check ticket,100,Pete,44,Fluxicon Nitro,check ticket,Pete,21.01.2011 11:34
+decide,200,Sara,44,Fluxicon Nitro,decide,Sara,23.01.2011 13:12
+reject request,200,Mike,44,Fluxicon Nitro,reject request,Mike,24.01.2011 14:56
+register request,50,Ellen,45,Fluxicon Nitro,register request,Ellen,06.01.2011 09:02
+examine casually,400,Mike,45,Fluxicon Nitro,examine casually,Mike,07.01.2011 10:16
+check ticket,100,Pete,45,Fluxicon Nitro,check ticket,Pete,08.01.2011 11:22
+decide,200,Sara,45,Fluxicon Nitro,decide,Sara,10.01.2011 13:28
+reinitiate request,200,Sara,45,Fluxicon Nitro,reinitiate request,Sara,11.01.2011 16:18
+check ticket,100,Ellen,45,Fluxicon Nitro,check ticket,Ellen,14.01.2011 14:33
+examine casually,400,Mike,45,Fluxicon Nitro,examine casually,Mike,16.01.2011 15:50
+decide,200,Sara,45,Fluxicon Nitro,decide,Sara,19.01.2011 11:18
+reinitiate request,200,Sara,45,Fluxicon Nitro,reinitiate request,Sara,20.01.2011 12:48
+examine casually,400,Sue,45,Fluxicon Nitro,examine casually,Sue,21.01.2011 09:06
+check ticket,100,Pete,45,Fluxicon Nitro,check ticket,Pete,21.01.2011 11:34
+decide,200,Sara,45,Fluxicon Nitro,decide,Sara,23.01.2011 13:12
+reject request,200,Mike,45,Fluxicon Nitro,reject request,Mike,24.01.2011 14:56
+register request,50,Ellen,46,Fluxicon Nitro,register request,Ellen,06.01.2011 09:02
+examine casually,400,Mike,46,Fluxicon Nitro,examine casually,Mike,07.01.2011 10:16
+check ticket,100,Pete,46,Fluxicon Nitro,check ticket,Pete,08.01.2011 11:22
+decide,200,Sara,46,Fluxicon Nitro,decide,Sara,10.01.2011 13:28
+reinitiate request,200,Sara,46,Fluxicon Nitro,reinitiate request,Sara,11.01.2011 16:18
+check ticket,100,Ellen,46,Fluxicon Nitro,check ticket,Ellen,14.01.2011 14:33
+examine casually,400,Mike,46,Fluxicon Nitro,examine casually,Mike,16.01.2011 15:50
+decide,200,Sara,46,Fluxicon Nitro,decide,Sara,19.01.2011 11:18
+reinitiate request,200,Sara,46,Fluxicon Nitro,reinitiate request,Sara,20.01.2011 12:48
+examine casually,400,Sue,46,Fluxicon Nitro,examine casually,Sue,21.01.2011 09:06
+check ticket,100,Pete,46,Fluxicon Nitro,check ticket,Pete,21.01.2011 11:34
+decide,200,Sara,46,Fluxicon Nitro,decide,Sara,23.01.2011 13:12
+reject request,200,Mike,46,Fluxicon Nitro,reject request,Mike,24.01.2011 14:56
+register request,50,Ellen,47,Fluxicon Nitro,register request,Ellen,06.01.2011 09:02
+examine casually,400,Mike,47,Fluxicon Nitro,examine casually,Mike,07.01.2011 10:16
+check ticket,100,Pete,47,Fluxicon Nitro,check ticket,Pete,08.01.2011 11:22
+decide,200,Sara,47,Fluxicon Nitro,decide,Sara,10.01.2011 13:28
+reinitiate request,200,Sara,47,Fluxicon Nitro,reinitiate request,Sara,11.01.2011 16:18
+check ticket,100,Ellen,47,Fluxicon Nitro,check ticket,Ellen,14.01.2011 14:33
+examine casually,400,Mike,47,Fluxicon Nitro,examine casually,Mike,16.01.2011 15:50
+decide,200,Sara,47,Fluxicon Nitro,decide,Sara,19.01.2011 11:18
+reinitiate request,200,Sara,47,Fluxicon Nitro,reinitiate request,Sara,20.01.2011 12:48
+examine casually,400,Sue,47,Fluxicon Nitro,examine casually,Sue,21.01.2011 09:06
+check ticket,100,Pete,47,Fluxicon Nitro,check ticket,Pete,21.01.2011 11:34
+decide,200,Sara,47,Fluxicon Nitro,decide,Sara,23.01.2011 13:12
+reject request,200,Mike,47,Fluxicon Nitro,reject request,Mike,24.01.2011 14:56
+register request,50,Ellen,48,Fluxicon Nitro,register request,Ellen,06.01.2011 09:02
+examine casually,400,Mike,48,Fluxicon Nitro,examine casually,Mike,07.01.2011 10:16
+check ticket,100,Pete,48,Fluxicon Nitro,check ticket,Pete,08.01.2011 11:22
+decide,200,Sara,48,Fluxicon Nitro,decide,Sara,10.01.2011 13:28
+reinitiate request,200,Sara,48,Fluxicon Nitro,reinitiate request,Sara,11.01.2011 16:18
+check ticket,100,Ellen,48,Fluxicon Nitro,check ticket,Ellen,14.01.2011 14:33
+examine casually,400,Mike,48,Fluxicon Nitro,examine casually,Mike,16.01.2011 15:50
+decide,200,Sara,48,Fluxicon Nitro,decide,Sara,19.01.2011 11:18
+reinitiate request,200,Sara,48,Fluxicon Nitro,reinitiate request,Sara,20.01.2011 12:48
+examine casually,400,Sue,48,Fluxicon Nitro,examine casually,Sue,21.01.2011 09:06
+check ticket,100,Pete,48,Fluxicon Nitro,check ticket,Pete,21.01.2011 11:34
+decide,200,Sara,48,Fluxicon Nitro,decide,Sara,23.01.2011 13:12
+reject request,200,Mike,48,Fluxicon Nitro,reject request,Mike,24.01.2011 14:56
+register request,50,Ellen,49,Fluxicon Nitro,register request,Ellen,06.01.2011 09:02
+examine casually,400,Mike,49,Fluxicon Nitro,examine casually,Mike,07.01.2011 10:16
+check ticket,100,Pete,49,Fluxicon Nitro,check ticket,Pete,08.01.2011 11:22
+decide,200,Sara,49,Fluxicon Nitro,decide,Sara,10.01.2011 13:28
+reinitiate request,200,Sara,49,Fluxicon Nitro,reinitiate request,Sara,11.01.2011 16:18
+check ticket,100,Ellen,49,Fluxicon Nitro,check ticket,Ellen,14.01.2011 14:33
+examine casually,400,Mike,49,Fluxicon Nitro,examine casually,Mike,16.01.2011 15:50
+decide,200,Sara,49,Fluxicon Nitro,decide,Sara,19.01.2011 11:18
+reinitiate request,200,Sara,49,Fluxicon Nitro,reinitiate request,Sara,20.01.2011 12:48
+examine casually,400,Sue,49,Fluxicon Nitro,examine casually,Sue,21.01.2011 09:06
+check ticket,100,Pete,49,Fluxicon Nitro,check ticket,Pete,21.01.2011 11:34
+decide,200,Sara,49,Fluxicon Nitro,decide,Sara,23.01.2011 13:12
+reject request,200,Mike,49,Fluxicon Nitro,reject request,Mike,24.01.2011 14:56
+register request,50,Ellen,50,Fluxicon Nitro,register request,Ellen,06.01.2011 09:02
+examine casually,400,Mike,50,Fluxicon Nitro,examine casually,Mike,07.01.2011 10:16
+check ticket,100,Pete,50,Fluxicon Nitro,check ticket,Pete,08.01.2011 11:22
+decide,200,Sara,50,Fluxicon Nitro,decide,Sara,10.01.2011 13:28
+reinitiate request,200,Sara,50,Fluxicon Nitro,reinitiate request,Sara,11.01.2011 16:18
+check ticket,100,Ellen,50,Fluxicon Nitro,check ticket,Ellen,14.01.2011 14:33
+examine casually,400,Mike,50,Fluxicon Nitro,examine casually,Mike,16.01.2011 15:50
+decide,200,Sara,50,Fluxicon Nitro,decide,Sara,19.01.2011 11:18
+reinitiate request,200,Sara,50,Fluxicon Nitro,reinitiate request,Sara,20.01.2011 12:48
+examine casually,400,Sue,50,Fluxicon Nitro,examine casually,Sue,21.01.2011 09:06
+check ticket,100,Pete,50,Fluxicon Nitro,check ticket,Pete,21.01.2011 11:34
+decide,200,Sara,50,Fluxicon Nitro,decide,Sara,23.01.2011 13:12
+reject request,200,Mike,50,Fluxicon Nitro,reject request,Mike,24.01.2011 14:56
+register request,50,Ellen,52,Fluxicon Nitro,register request,Ellen,06.01.2011 09:02
+examine casually,400,Mike,52,Fluxicon Nitro,examine casually,Mike,07.01.2011 10:16
+check ticket,100,Pete,52,Fluxicon Nitro,check ticket,Pete,08.01.2011 11:22
+decide,200,Sara,52,Fluxicon Nitro,decide,Sara,10.01.2011 13:28
+reinitiate request,200,Sara,52,Fluxicon Nitro,reinitiate request,Sara,11.01.2011 16:18
+check ticket,100,Ellen,52,Fluxicon Nitro,check ticket,Ellen,14.01.2011 14:33
+examine casually,400,Mike,52,Fluxicon Nitro,examine casually,Mike,16.01.2011 15:50
+decide,200,Sara,52,Fluxicon Nitro,decide,Sara,19.01.2011 11:18
+reinitiate request,200,Sara,52,Fluxicon Nitro,reinitiate request,Sara,20.01.2011 12:48
+examine casually,400,Sue,52,Fluxicon Nitro,examine casually,Sue,21.01.2011 09:06
+check ticket,100,Pete,52,Fluxicon Nitro,check ticket,Pete,21.01.2011 11:34
+decide,200,Sara,52,Fluxicon Nitro,decide,Sara,23.01.2011 13:12
+reject request,200,Mike,52,Fluxicon Nitro,reject request,Mike,24.01.2011 14:56

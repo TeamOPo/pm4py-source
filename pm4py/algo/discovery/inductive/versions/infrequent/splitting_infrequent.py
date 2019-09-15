@@ -45,7 +45,8 @@ def find_split_point(trace, cut_partition, start, ignore):
     least_cost = start
     position_with_least_cost = start
     cost = float(0)
-    for i in range(start, len(trace)):
+    i = start
+    while i < len(trace):
         if trace[i]['concept:name'] in cut_partition:
             cost = cost-1
         elif trace[i]['concept:name'] not in ignore:
@@ -53,9 +54,10 @@ def find_split_point(trace, cut_partition, start, ignore):
             if i == 0:
                 possibly_best_before_first_activity = True
             cost = cost+1
-        if cost < least_cost:
+        if cost <= least_cost:
             least_cost = cost
             position_with_least_cost = i+1
+        i += 1
     if possibly_best_before_first_activity and position_with_least_cost == 1:
         position_with_least_cost = 0
     return position_with_least_cost
@@ -105,17 +107,20 @@ def split_sequence_infrequent(cut, l):
     n = len(cut)
     new_logs = [log.EventLog() for j in range(0, n)]
     ignore = []
+    split_points_list = [0] * len(l)
     for i in range(0, n):
         split_point = 0
         # write our ignore list with all elements from past cut partitions
         if i != 0:
             for element in cut[i-1]:
                 ignore.append(element)
-        for trace in l:
-            new_split_point = find_split_point(trace, cut[i], split_point, ignore)
-            cutted_trace = cut_trace_between_two_points(trace, split_point, new_split_point)
+        for j in range(len(l)):
+            trace = l[j]
+            new_split_point = find_split_point(trace, cut[i], split_points_list[j], ignore)
+            cutted_trace = cut_trace_between_two_points(trace, split_points_list[j], new_split_point)
             filtered_trace = filter_trace_on_cut_partition(cutted_trace, cut[i])
             new_logs[i].append(filtered_trace)
+            split_points_list[j] = new_split_point
     return new_logs
 
 
@@ -136,7 +141,7 @@ def split_loop_infrequent(cut, l):
                 new_logs[j].append(st)
                 st = log.Trace()
                 for partition in cut:
-                    if act in partition:
+                    if act["concept:name"] in partition:
                         s.append(partition)
         # L_j <- L_j + [st] with sigma_j = s
         j = 0

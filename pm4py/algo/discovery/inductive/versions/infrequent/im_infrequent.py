@@ -48,5 +48,4 @@ def apply_im_infrequent(log, f, parameters):
 
 
 def apply_infrequent_petrinet(tree):
-    pn = tree_to_petri.apply(tree)
-    return pn
+    return tree_to_petri.apply(tree)
