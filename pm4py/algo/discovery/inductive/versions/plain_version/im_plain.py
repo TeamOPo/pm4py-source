@@ -33,7 +33,7 @@ def apply_im_plain(log, parameters):
     traces_length = [len(trace) for trace in log]
     if traces_length:
         contains_empty_traces = min([len(trace) for trace in log]) == 0
-
+    print('initial dfg: ', dfg)
     recursion_depth = 0
     sub = subtree.make_tree(log, dfg, dfg, dfg, activities, c, recursion_depth, noise_threshold, start_activities, end_activities,
                             start_activities, end_activities)

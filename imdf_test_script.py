@@ -24,26 +24,69 @@ from pm4py import util as pmutil
 from pm4py.objects.log.util import xes as xes_util
 from pm4py.algo.discovery.inductive.versions.infrequent import splitting_infrequent as split
 from pm4py.algo.discovery.inductive.versions.plain_version import fall_through
+from pm4py.algo.conformance.tokenreplay import factory as token_replay
+from pm4py.objects.log import log
+from pm4py.algo.discovery.inductive.versions.plain_version.data_structures import subtree_plain
+
 
 
 # import csv
-stream = csv_importer.import_event_stream(os.path.join("tests", "input_data", "running-example-long.csv"))
+stream = csv_importer.import_event_stream(os.path.join("tests", "input_data", "examples", "find_error.csv"))
 log = conv_factory.apply(stream)
+
+
 
 # import xmex
 # log = xes_import_factory.apply("tests\\compressed_input_data\\running-example-long.xes")
 
 
 # add noise to log
-noise_parameters = {"p_dev_activity": 0.2, "p_dev_time": 0.4, "p_dev_additional": 0.5}
-log_with_noise = introduce_deviations(log, noise_parameters)
+# noise_parameters = {"p_dev_activity": 0.2, "p_dev_time": 0.4, "p_dev_additional": 0.5}
+# log_with_noise = introduce_deviations(log, noise_parameters)
 # joblib.dump(log_with_noise, "Log with Noise", compress=3)
-# log_fitness = joblib.load("fitness_example")
+
+log_fitness = joblib.load("fitness_example")
+print(split.show_nice_log(log))
+tree_noise = imp.apply_im_plain(log, None)
+net_noise, initial_marking_noise, final_marking_noise = imp.apply_plain_petrinet(tree_noise)
+print(fitness_factory.apply(log, net_noise, initial_marking_noise, final_marking_noise))
+
+
+"""
+net, initial_marking, final_marking = imp.apply_plain_petrinet(tree)
+print(tree)
+print(fitness_factory.apply(log, net, initial_marking, final_marking))
+"""
+
+
+
+# find the traces that can't be replayed:
+
+log_with_traces_only_once = []
+for trace in log:
+    if split.show_nice_trace(trace) not in log_with_traces_only_once:
+        log_with_traces_only_once.append(split.show_nice_trace(trace))
+print(len(log), len(log_with_traces_only_once))
+
+unfit = []
+for trace in log:
+    if split.show_nice_trace(trace) in log_with_traces_only_once:
+        replay_result = token_replay.apply([trace], net_noise, initial_marking_noise, final_marking_noise)
+        if not replay_result[0]["trace_is_fit"]:
+            unfit.append((split.show_nice_trace(trace), list(replay_result))) 
+        log_with_traces_only_once.remove(split.show_nice_trace(trace))
+print(unfit)
+
+
+
+
+
+
 
 # built dict representation of log
 """
 nl = {}
-for trace in log:
+for trace in log_fitness:
     nt = []
     for element in trace:
         nt.append(element['concept:name'])
@@ -72,13 +115,13 @@ print('noise log: ', nl_n)
 
 # apply im_plain
 # tree = imp.apply_im_plain(log, None)
-tree_noise = imp.apply_im_plain(log_with_noise, None)
+# tree_noise = imp.apply_im_plain(log_with_noise, None)
 # joblib.dump(tree_noise, "tree_object", compress=3)
 # apply im_infrequent
-tree_if = imf.apply_im_infrequent(log_with_noise, 0.35, None)
+# tree_if = imf.apply_im_infrequent(log_with_noise, 0.35, None)
 
 # apply im_dfg
-tree_dfg = inductive_miner.apply_tree(log_with_noise)
+# tree_dfg = inductive_miner.apply_tree(log_with_noise)
 
 
 # show tree
@@ -86,25 +129,26 @@ tree_parameters = {"format": "PDF"}
 """
 gviz = pt_vis_factory.apply(tree, tree_parameters)
 pt_vis_factory.view(gviz)
-
+"""
 gviz_noise = pt_vis_factory.apply(tree_noise, tree_parameters)
 pt_vis_factory.view(gviz_noise)
-
+"""
 gviz_noise_if = pt_vis_factory.apply(tree_if, tree_parameters)
 pt_vis_factory.view(gviz_noise_if)
 """
 
 # show petri_net
 # net, initial_marking, final_marking = imp.apply_plain_petrinet(tree)
-net_noise, initial_marking_noise, final_marking_noise = imp.apply_plain_petrinet(tree_noise)
-net_if, initial_marking_if, final_marking_if = imf.apply_infrequent_petrinet(tree_if)
-net_dfg, initial_marking_dfg, final_marking_dfg = inductive_miner.apply(log_with_noise)
+# net_noise, initial_marking_noise, final_marking_noise = imp.apply_plain_petrinet(tree_noise)
+# net_if, initial_marking_if, final_marking_if = imf.apply_infrequent_petrinet(tree_if)
+# net_dfg, initial_marking_dfg, final_marking_dfg = inductive_miner.apply(log_with_noise)
 
 # gviz_net = pn_vis_factory.apply(net_noise, initial_marking_noise, final_marking_noise)
 # pn_vis_factory.view(gviz_net)
 
 
 # calculate & print metrics
+"""
 # fitness = fitness_factory.apply(log, net, initial_marking, final_marking)
 fitness_noise = fitness_factory.apply(log_with_noise, net_noise, initial_marking_noise, final_marking_noise)
 fitness_if = fitness_factory.apply(log_with_noise, net_if, initial_marking_if, final_marking_if)
@@ -126,7 +170,7 @@ precision_noise = precision_factory.apply(log_with_noise, net_noise, initial_mar
 precision_if = precision_factory.apply(log_with_noise, net_if, initial_marking_if, final_marking_if)
 precision_dfg = precision_factory.apply(log_with_noise, net_dfg, initial_marking_dfg, final_marking_dfg)
 print('precision: ',  precision_noise, precision_if, precision_dfg)
-
+"""
 
 
 
