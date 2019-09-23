@@ -14,7 +14,7 @@ def introduce_deviations(logf, parameters):
     if len(log) < 10:
         number_of_changed_traces = len(log)/3
     else:
-        number_of_changed_traces = len(log)/10
+        number_of_changed_traces = len(log)/8
     for i in range(0, int(number_of_changed_traces)):
         random_number = randint(0, len(log)-1)
         random_index.append(random_number)

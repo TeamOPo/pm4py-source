@@ -1,0 +1,18 @@
+Activity,Costs,Resource,case:concept:name,case:creator,concept:name,org:resource,time:timestamp
+register request,50,Pete,2,Fluxicon Nitro,register request,Pete,30.12.2010 11:02
+check ticket,100,Mike,2,Fluxicon Nitro,check ticket,Mike,05.01.2011 15:12
+decide,200,Sara,2,Fluxicon Nitro,decide,Sara,06.01.2011 11:18
+register request,50,Pete,2,Fluxicon Nitro,register request,Pete,07.01.2011 11:02
+examine casually,400,Sean,2,Fluxicon Nitro,examine casually,Sean,12.01.2011 14:16
+register request,50,Pete,1,Fluxicon Nitro,register request,Pete,30.12.2010 11:02
+examine casually,400,Sean,1,Fluxicon Nitro,examine casually,Sean,30.12.2010 14:16
+check ticket,100,Mike,1,Fluxicon Nitro,check ticket,Mike,05.01.2011 15:12
+decide,200,Sara,1,Fluxicon Nitro,decide,Sara,06.01.2011 11:18
+reinitiate request,200,Sara,1,Fluxicon Nitro,reinitiate request,Sara,06.01.2011 12:18
+check ticket,100,Pete,1,Fluxicon Nitro,check ticket,Pete,08.01.2011 11:43
+examine casually,400,Sean,1,Fluxicon Nitro,examine casually,Sean,09.01.2011 14:16
+decide,200,Sara,1,Fluxicon Nitro,decide,Sara,10.01.2011 11:18
+reinitiate request,200,Sara,1,Fluxicon Nitro,reinitiate request,Sara,11.01.2011 12:18
+examine casually,400,Sean,1,Fluxicon Nitro,examine casually,Sean,12.01.2011 14:16
+check ticket,100,Mike,1,Fluxicon Nitro,check ticket,Mike,13.01.2011 15:12
+decide,200,Sara,1,Fluxicon Nitro,decide,Sara,14.01.2011 11:18

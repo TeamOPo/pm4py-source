@@ -124,9 +124,6 @@ def activity_concurrent(self, l, activities):
                         break
                 if not contains_activity:
                     small_log.append(empty_trace)
-            dfg_viz = dfg_factory.apply(l)
-            gviz = dfg_vis_factory.apply(dfg_viz, log=l, variant="frequency")
-            dfg_vis_factory.view(gviz)
             return True, test_log, small_log, key                  # if so, return new log
 
     return False, test_log, small_log, key      # if,  after iterating through all act's still no cut is found, return false

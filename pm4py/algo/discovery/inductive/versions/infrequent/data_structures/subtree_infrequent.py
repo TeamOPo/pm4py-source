@@ -18,6 +18,8 @@ from pm4py.algo.filtering.log.start_activities import start_activities_filter
 
 from pm4py.algo.discovery.inductive.versions.infrequent import splitting_infrequent, fall_through_infrequent
 from pm4py.algo.discovery.inductive.versions.plain_version import fall_through
+from pm4py.visualization.dfg import factory as dfg_vis_factory
+from pm4py.algo.discovery.dfg import factory as dfg_factory
 
 
 class SubtreeInfrequent(object):
@@ -504,14 +506,26 @@ class SubtreeInfrequent(object):
                     else:
                         return False, 'noCut', []
 
+    def calculate_threshold(self, act):
+        max_value = 0
+        for element in self.dfg:
+            if element[0][0] == act:
+                if element[1] > max_value:
+                    max_value = element[1]
+        return max_value
+
     def filter_dfg_on_threshold(self):
         filtered_dfg = []
         for element in self.dfg:
-            if element[1] == self.noise_threshold or element[1] > self.noise_threshold:
+            threshold = self.calculate_threshold(element[0][0])*self.f
+            if element[1] == threshold or element[1] > threshold:
                 filtered_dfg.append(element)
         self.dfg = filtered_dfg
 
     def apply_cut_im_plain(self, type_of_cut, cut, activity_key):
+        # dfg_viz = dfg_factory.apply(self.log)
+        # gviz = dfg_vis_factory.apply(dfg_viz, log=self.log, variant="frequency", parameters={"format": "PDF"})
+        # dfg_vis_factory.view(gviz)
         if type_of_cut == 'concurrent':
             # print('plain cut: plain concurrent', cut[1])
             self.detected_cut = 'concurrent'
@@ -595,6 +609,9 @@ class SubtreeInfrequent(object):
                                  initial_end_activities=self.initial_end_activities))
 
     def detect_cut_if(self,  second_iteration=False, parameters=None):
+        # dfg_viz = dfg_factory.apply(self.log)
+        # gviz = dfg_vis_factory.apply(dfg_viz, log=self.log, variant="frequency", parameters={"format": "PDF"})
+        # dfg_vis_factory.view(gviz)
         if parameters is None:
             parameters = {}
         if pmutil.constants.PARAMETER_CONSTANT_ACTIVITY_KEY not in parameters:
@@ -616,14 +633,19 @@ class SubtreeInfrequent(object):
         else:
             found_plain_cut, type_of_cut, cut = self.check_cut_im_plain()
             if found_plain_cut:
-                # print('found plain cut')
+                # print('found plain cut', type_of_cut)
                 self.apply_cut_im_plain(type_of_cut, cut, activity_key)
             # if im_plain does not find a cut, we filter on our threshold and then again apply the im_cut detection
             # but this time, we have to use different splitting functions:
             else:
-                # print('no plain cut found, filter dfg on threshold ', self.noise_threshold)
+                # print('no plain cut found, filter dfg on threshold ', self.f)
                 self.filter_dfg_on_threshold()
                 # print('filtered dfg: ', self.dfg)
+                """
+                dfg_viz = dfg_factory.apply(self.log)
+                gviz = dfg_vis_factory.apply(dfg_viz, log=self.log, variant="frequency", parameters={"format": "PDF"})
+                dfg_vis_factory.view(gviz)
+                """
                 found_plain_cut, type_of_cut, cut = self.check_cut_im_plain()
                 if found_plain_cut:
                     if type_of_cut == 'concurrent':
