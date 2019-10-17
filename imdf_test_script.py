@@ -29,16 +29,77 @@ from pm4py.objects.log import log
 from pm4py.algo.discovery.inductive.versions.plain_version.data_structures import subtree_plain
 from pm4py.algo.simulation.tree_generator import factory as tree_gen
 
+"""
+stream1 = csv_importer.import_event_stream(os.path.join("tests", "input_data", "running-example-long.csv"))
+log1 = conv_factory.apply(stream1)
+stream = csv_importer.import_event_stream(os.path.join("tests", "input_data", "roadtraffic100traces.csv"))
+log2 = conv_factory.apply(stream)
 
 
-# generate logs:
+activities = []
+for trace in log1:
+    for element in trace:
+        if element["concept:name"] not in activities:
+            activities.append(element["concept:name"])
+print("log1: ", len(activities))
+activities2 = []
+for trace in log1:
+    for element in trace:
+        if element["concept:name"] not in activities2:
+            activities2.append(element["concept:name"])
+print("log2: ", len(log2), len(activities2))
 
+
+"""
+"""
+noise_parameters = {"p_dev_activity": 0.5, "p_dev_time": 0.5, "p_dev_additional": 0.5}
 parameters = {"min_rec_depth": 100}
 random_tree = tree_gen.apply()
 net, initial_marking, final_marking = imp.apply_plain_petrinet(random_tree)
-log = playout_factory.apply(net, initial_marking, parameters={"noTraces": 30, "maxTraceLength": 50})
-print(split.show_nice_log(log))
-print(len(split.show_nice_log(log)))
+random_log = playout_factory.apply(net, initial_marking, parameters={"noTraces": 50, "maxTraceLength": 50})
+rl_1_noise_1 = introduce_deviations(random_log, noise_parameters)
+tree1 = imp.apply_im_plain(rl_1_noise_1, None)
+net_noise, initial_marking_noise, final_marking_noise = imp.apply_plain_petrinet(tree1)
+print(fitness_factory.apply(rl_1_noise_1, net_noise, initial_marking_noise, final_marking_noise))
+tree = imp.apply_im_plain(random_log, None)
+net_noise, initial_marking_noise, final_marking_noise = imp.apply_plain_petrinet(tree)
+print(fitness_factory.apply(random_log, net_noise, initial_marking_noise, final_marking_noise))
+print("log lenthg: ", len(random_log))
+length = 0
+for trace in random_log:
+    length += len(trace)
+print("avg trace length: ", length/len(random_log))
+print(random_tree)
+
+
+joblib.dump(random_tree, "random_tree_1", compress=3)
+joblib.dump(random_log, "random_log_1", compress=3)
+joblib.dump(rl_1_noise_1, "random_log_noise_1_1", compress=3)
+
+
+# Experiment setup
+
+rl_1 = joblib.load("random_log_1")
+rl_2 = joblib.load("random_log_2")
+rl_3 = joblib.load("random_log_3")
+
+noise_parameters = {"p_dev_activity": 0.5, "p_dev_time": 0.5, "p_dev_additional": 0.5}
+rl_1_noise_1 = introduce_deviations(rl_1, noise_parameters)
+rl_2_noise_1 = introduce_deviations(rl_1, noise_parameters)
+rl_3_noise_1 = introduce_deviations(rl_1, noise_parameters)
+tree1 = imp.apply_im_plain(rl_1_noise_1, None)
+net_noise, initial_marking_noise, final_marking_noise = imp.apply_plain_petrinet(tree1)
+print(fitness_factory.apply(rl_1_noise_1, net_noise, initial_marking_noise, final_marking_noise))
+tree2 = imp.apply_im_plain(rl_2_noise_1, None)
+net_noise, initial_marking_noise, final_marking_noise = imp.apply_plain_petrinet(tree2)
+print(fitness_factory.apply(rl_2_noise_1, net_noise, initial_marking_noise, final_marking_noise))
+tree3 = imp.apply_im_plain(rl_3, None)
+net_noise, initial_marking_noise, final_marking_noise = imp.apply_plain_petrinet(tree3)
+print(fitness_factory.apply(rl_3, net_noise, initial_marking_noise, final_marking_noise))
+"""
+
+
+"""
 # stream = csv_importer.import_event_stream(os.path.join("tests", "input_data", "reviewing.csv"))
 # log = conv_factory.apply(stream)
 # log = xes_import_factory.apply("tests\\compressed_input_data\\03_repairExample\\repairExample.xes")
@@ -149,6 +210,7 @@ print('generalization: ', generalization_noise, generalization_1, generalization
 print('precision: ', precision_noise, precision_1, precision_5, precision_9,
       precision_dfg)
 
+"""
 
 
 
@@ -158,23 +220,70 @@ print('precision: ', precision_noise, precision_1, precision_5, precision_9,
 
 
 
+
+
+
+
+
+
+
+# generate random logs
+"""
+parameters = {"min_rec_depth": 100}
+random_tree = tree_gen.apply()
+net, initial_marking, final_marking = imp.apply_plain_petrinet(random_tree)
+random_log = playout_factory.apply(net, initial_marking, parameters={"noTraces": 50, "maxTraceLength": 50})
+print("log lenthg: ", len(random_log))
+length = 0
+for trace in random_log:
+    length += len(trace)
+print("avg trace length: ", length/len(random_log))
+joblib.dump(random_tree, "random_tree_x", compress=3)
+joblib.dump(random_log, "random_log_x", compress=3)
+print(random_tree)
+tree = imp.apply_im_plain(random_log, None)
+net_noise, initial_marking_noise, final_marking_noise = imp.apply_plain_petrinet(tree)
+print(fitness_factory.apply(random_log, net_noise, initial_marking_noise, final_marking_noise))
+"""
+
+
+
+
+
+# debugging section
 """
 # import csv
 # stream = csv_importer.import_event_stream(os.path.join("tests", "input_data", "running-example-long.csv"))
 # log = conv_factory.apply(stream)
 
-stream = csv_importer.import_event_stream(os.path.join("tests", "input_data", "examples", "weird.csv"))
-log = conv_factory.apply(stream)
 
+log_with_noise = joblib.load("debugging")
+# built dict representation of log
 
-tree = imp.apply_im_plain(log, None)
-#tree = imf.apply_im_infrequent(log, 0.3, None)
+nl = {}
+for trace in log_with_noise:
+    nt = []
+    for element in trace:
+        nt.append(element['concept:name'])
+    nt_list = ''.join(", "+str(e) for e in nt)
+    if nt_list in nl.keys():
+        nl[nt_list] += 1
+    else:
+        nl[nt_list] = 1
+print('normal log:  ', nl)
+
+tree = imp.apply_im_plain(log_with_noise, None)
 tree_parameters = {"format": "PDF"}
 gviz = pt_vis_factory.apply(tree, tree_parameters)
 pt_vis_factory.view(gviz)
+net_noise, initial_marking_noise, final_marking_noise = imp.apply_plain_petrinet(tree)
+print(fitness_factory.apply(log, net_noise, initial_marking_noise, final_marking_noise))
+
+joblib.dump(log_with_noise, "debugging", compress=3)
+"""
 
 
-
+"""
 # import xmex
 # log = xes_import_factory.apply("tests\\compressed_input_data\\running-example-long.xes")
 
@@ -193,15 +302,11 @@ print(split.show_nice_log(log))
 tree_noise = imp.apply_im_plain(log, None)
 net_noise, initial_marking_noise, final_marking_noise = imp.apply_plain_petrinet(tree_noise)
 print(fitness_factory.apply(log, net_noise, initial_marking_noise, final_marking_noise))
-"""
 
-"""
 net, initial_marking, final_marking = imp.apply_plain_petrinet(tree)
 print(tree)
 print(fitness_factory.apply(log, net, initial_marking, final_marking))
 """
-
-
 
 # find the traces that can't be replayed:
 """
@@ -221,11 +326,6 @@ for trace in log:
 print(unfit)
 """
 
-
-
-
-
-
 # built dict representation of log
 """
 nl = {}
@@ -239,9 +339,7 @@ for trace in log_fitness:
     else:
         nl[nt_list] = 1
 print('normal log:  ', nl)
-"""
 
-"""
 nl_n = {}
 for trace in log_with_noise:
     nt = []

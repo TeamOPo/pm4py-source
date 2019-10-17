@@ -120,8 +120,8 @@ def activity_concurrent(self, l, activities):
                     if element['concept:name'] == key:
                         contains_activity = True
                         small_trace.append(element)
-                        small_log.append(small_trace)
-                        break
+                small_log.append(small_trace)
+
                 if not contains_activity:
                     small_log.append(empty_trace)
             return True, test_log, small_log, key                  # if so, return new log

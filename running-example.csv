@@ -1,0 +1,43 @@
+Activity;Costs;Resource;case:concept:name;case:creator;concept:name;org:resource;time:timestamp
+register request;50;Pete;3;Fluxicon Nitro;register request;Pete;30.12.2010 14:32
+examine casually;400;Mike;3;Fluxicon Nitro;examine casually;Mike;30.12.2010 15:06
+check ticket;100;Ellen;3;Fluxicon Nitro;check ticket;Ellen;30.12.2010 16:34
+decide;200;Sara;3;Fluxicon Nitro;decide;Sara;06.01.2011 09:18
+reinitiate request;200;Sara;3;Fluxicon Nitro;reinitiate request;Sara;06.01.2011 12:18
+examine thoroughly;400;Sean;3;Fluxicon Nitro;examine thoroughly;Sean;06.01.2011 13:06
+check ticket;100;Pete;3;Fluxicon Nitro;check ticket;Pete;08.01.2011 11:43
+decide;200;Sara;3;Fluxicon Nitro;decide;Sara;09.01.2011 09:55
+pay compensation;200;Ellen;3;Fluxicon Nitro;pay compensation;Ellen;15.01.2011 10:45
+register request;50;Mike;2;Fluxicon Nitro;register request;Mike;30.12.2010 11:32
+check ticket;100;Mike;2;Fluxicon Nitro;check ticket;Mike;30.12.2010 12:12
+examine casually;400;Sean;2;Fluxicon Nitro;examine casually;Sean;30.12.2010 14:16
+decide;200;Sara;2;Fluxicon Nitro;decide;Sara;05.01.2011 11:22
+pay compensation;200;Ellen;2;Fluxicon Nitro;pay compensation;Ellen;08.01.2011 12:05
+register request;50;Pete;1;Fluxicon Nitro;register request;Pete;30.12.2010 11:02
+examine thoroughly;400;Sue;1;Fluxicon Nitro;examine thoroughly;Sue;31.12.2010 10:06
+check ticket;100;Mike;1;Fluxicon Nitro;check ticket;Mike;05.01.2011 15:12
+decide;200;Sara;1;Fluxicon Nitro;decide;Sara;06.01.2011 11:18
+reject request;200;Pete;1;Fluxicon Nitro;reject request;Pete;07.01.2011 14:24
+register request;50;Mike;6;Fluxicon Nitro;register request;Mike;06.01.2011 15:02
+examine casually;400;Ellen;6;Fluxicon Nitro;examine casually;Ellen;06.01.2011 16:06
+check ticket;100;Mike;6;Fluxicon Nitro;check ticket;Mike;07.01.2011 16:22
+decide;200;Sara;6;Fluxicon Nitro;decide;Sara;07.01.2011 16:52
+pay compensation;200;Mike;6;Fluxicon Nitro;pay compensation;Mike;16.01.2011 11:47
+register request;50;Ellen;5;Fluxicon Nitro;register request;Ellen;06.01.2011 09:02
+examine casually;400;Mike;5;Fluxicon Nitro;examine casually;Mike;07.01.2011 10:16
+check ticket;100;Pete;5;Fluxicon Nitro;check ticket;Pete;08.01.2011 11:22
+decide;200;Sara;5;Fluxicon Nitro;decide;Sara;10.01.2011 13:28
+reinitiate request;200;Sara;5;Fluxicon Nitro;reinitiate request;Sara;11.01.2011 16:18
+check ticket;100;Ellen;5;Fluxicon Nitro;check ticket;Ellen;14.01.2011 14:33
+examine casually;400;Mike;5;Fluxicon Nitro;examine casually;Mike;16.01.2011 15:50
+decide;200;Sara;5;Fluxicon Nitro;decide;Sara;19.01.2011 11:18
+reinitiate request;200;Sara;5;Fluxicon Nitro;reinitiate request;Sara;20.01.2011 12:48
+examine casually;400;Sue;5;Fluxicon Nitro;examine casually;Sue;21.01.2011 09:06
+check ticket;100;Pete;5;Fluxicon Nitro;check ticket;Pete;21.01.2011 11:34
+decide;200;Sara;5;Fluxicon Nitro;decide;Sara;23.01.2011 13:12
+reject request;200;Mike;5;Fluxicon Nitro;reject request;Mike;24.01.2011 14:56
+register request;50;Pete;4;Fluxicon Nitro;register request;Pete;06.01.2011 15:02
+check ticket;100;Mike;4;Fluxicon Nitro;check ticket;Mike;07.01.2011 12:06
+examine thoroughly;400;Sean;4;Fluxicon Nitro;examine thoroughly;Sean;08.01.2011 14:43
+decide;200;Sara;4;Fluxicon Nitro;decide;Sara;09.01.2011 12:02
+reject request;200;Ellen;4;Fluxicon Nitro;reject request;Ellen;12.01.2011 15:44

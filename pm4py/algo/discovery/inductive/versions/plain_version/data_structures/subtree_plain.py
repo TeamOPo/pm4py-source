@@ -673,7 +673,8 @@ class SubtreePlain(object):
                                     for acti in element:
                                         if acti not in p0[0]:
                                             p0[0].append(acti)
-                                    p0.remove(element)  # remove subsets that are connected to an end activity
+                                    if element in p0:
+                                        p0.remove(element)  # remove subsets that are connected to an end activity
                                     break
                     for s in start_activities:
                         if (act, s) in iterable_dfg:    # same as above (in this case for activities connected to
@@ -686,9 +687,12 @@ class SubtreePlain(object):
                                     if element in p0:
                                         p0.remove(element)  # remove subsets that are connected to an end activity
                                     break
-        for element in p0:
-            if len(element) == 0:
-                p0.remove(element)
+        index_to_delete = []
+        for i in range(0, len(p0)):
+            if not p0[i]:
+                index_to_delete.insert(0, i)
+        for index in index_to_delete:
+            p0.remove(p0[index])
         if len(p0) > 1:
             return [True, p0]
         else:

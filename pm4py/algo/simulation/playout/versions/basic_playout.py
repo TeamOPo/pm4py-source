@@ -4,11 +4,12 @@ from random import shuffle
 import pm4py.objects.log.log as log_instance
 from pm4py.objects.petri import semantics
 
+import time
+import datetime
 
 def apply_playout(net, initial_marking, no_traces=100, max_trace_length=100):
     """
     Do the playout of a Petrinet generating a log
-
     Parameters
     ----------
     net
@@ -20,6 +21,8 @@ def apply_playout(net, initial_marking, no_traces=100, max_trace_length=100):
     max_trace_length
         Maximum number of events per trace (do break)
     """
+    # assigns to each event an increased timestamp from 1970
+    curr_timestamp = 0
     log = log_instance.EventLog()
     for i in range(no_traces):
         trace = log_instance.Trace()
@@ -35,7 +38,10 @@ def apply_playout(net, initial_marking, no_traces=100, max_trace_length=100):
             if trans.label is not None:
                 event = log_instance.Event()
                 event["concept:name"] = trans.label
+                event["time:timestamp"] = datetime.datetime.fromtimestamp(curr_timestamp)
                 trace.append(event)
+                # increases by 1 second
+                curr_timestamp = curr_timestamp + 1
             marking = semantics.execute(trans, net, marking)
             if len(trace) > max_trace_length:
                 break
@@ -47,7 +53,6 @@ def apply_playout(net, initial_marking, no_traces=100, max_trace_length=100):
 def apply(net, initial_marking, parameters=None):
     """
     Do the playout of a Petrinet generating a log
-
     Parameters
     -----------
     net
