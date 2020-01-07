@@ -29,10 +29,26 @@ from pm4py.objects.log import log
 from pm4py.algo.discovery.inductive.versions.plain_version.data_structures import subtree_plain
 from pm4py.algo.simulation.tree_generator import factory as tree_gen
 import csv
+import pm4py.objects.conversion.process_tree.factory as tree_to_net
 
+"""
+E1_8_16 = joblib.load("E1_16_16_noise_30")
+#t1 = imp.apply_im_plain(E1_8_16, None)
+t1 = imf.apply_im_infrequent(E1_8_16, 0.3, None)
+print(t1)
+tree_parameters = {"format": "PDF"}
+gviz = pt_vis_factory.apply(t1, tree_parameters)
+pt_vis_factory.view(gviz)
+net1, initial_marking1, final_marking1 = imp.apply_plain_petrinet(t1)
+#precision3 = precision_factory.apply(E1_8_16, net1, initial_marking1, final_marking1)
+fitness1 = fitness_factory.apply(E1_8_16, net1, initial_marking1, final_marking1)
+simplicity1 = simple_factory.apply(net1)
+#print("p", precision3)
+print("f", fitness1)
+print("s", simplicity1)
 
 # generating logs:
-"""
+
 def generate_log():
     random_tree = tree_gen.apply()
     net, initial_marking, final_marking = imp.apply_plain_petrinet(random_tree)
@@ -63,12 +79,11 @@ while True:
             net1, initial_marking1, final_marking1 = imp.apply_plain_petrinet(tree)
             fitness1 = fitness_factory.apply(random_l, net1, initial_marking1, final_marking1)
             print(fitness1['log_fitness'])
-            if fitness1['log_fitness'] == 1:
-                print("avg trace length ", avg)
-                print('fitness: ', fitness1['log_fitness'])
-                print(len(activities), activities)
-                print(random_t)
-                break
+            print("avg trace length ", avg)
+            print('fitness: ', fitness1['log_fitness'])
+            print(len(activities), activities)
+            print(random_t)
+            break
 
 joblib.dump(random_t, "E1_8_16t", compress=3)
 joblib.dump(random_l, "E1_8_16", compress=3)
@@ -149,7 +164,7 @@ E1_16_16_noise_10 = introduce_deviations(E1_16_16, noise_parameters)
 t6 = imp.apply_im_plain(E1_16_16_noise_10, None)
 joblib.dump(E1_16_16_noise_10, "E1_16_16_noise_10", compress=3)
 joblib.dump(t6, "E1_16_16t_10", compress=3)
-"""
+
 
 
 # load logs and generate models
@@ -243,3 +258,19 @@ with open('dfg_0.csv', 'w') as csvFile:
     writer = csv.writer(csvFile)
     writer.writerows(csvData)
 csvFile.close()
+"""
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

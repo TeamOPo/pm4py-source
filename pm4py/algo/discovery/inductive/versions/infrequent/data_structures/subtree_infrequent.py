@@ -137,7 +137,6 @@ class SubtreeInfrequent(object):
         self.detect_cut_if(second_iteration=False, parameters=None)
 
     def get_connected_components(self, ingoing, outgoing, activities):
-        """Question: is the set like a potenzmenge, i.e. if ABC can AB and BC and for example also be part?"""
         """
         Get connected components in the DFG graph
         Parameters
@@ -353,7 +352,8 @@ class SubtreeInfrequent(object):
         return [False, [], []]
 
     def detect_concurrent(self):
-        inverted_dfg = []  # create an inverted dfg, the connected components of this dfg are the split
+        inverted_dfg = []
+        # create an inverted dfg, the connected components of this dfg are the split
         for a in self.activities:
             for b in self.activities:
                 if a != b:
@@ -369,6 +369,16 @@ class SubtreeInfrequent(object):
             return [True, conn]
 
         return [False, []]
+
+    def get_index_of_x_in_list(self, x, li):
+        for i in range(0, len(li)):
+            if li[i] == x:
+                return i
+
+    def find_set_with_x(self, x, list_of_sets):
+        for i in range(0, len(list_of_sets)):
+            if x in list_of_sets[i]:
+                return i
 
     def detect_loop(self):
         # p0 is part of return value, it contains the partition of activities
@@ -392,31 +402,82 @@ class SubtreeInfrequent(object):
         # get connected components of this new dfg
         new_ingoing = get_ingoing_edges(new_dfg)
         new_outgoing = get_outgoing_edges(new_dfg)
-        # it was a pain in the *** to get a working directory of the current_activities, as we can't iterate ove the dfg
+
         current_activities = {}
+        iterate_order = []
         for element in self.activities:
             if element not in p1:
                 current_activities.update({element: 1})
-        p0 = get_connected_components(new_ingoing, new_outgoing, current_activities)
-        p0.insert(0, p1)
+                iterate_order.append(element)
+        # create an overview of what activity has which outgoing connections
+        outgoing = [list() for _ in range(len(iterate_order))]
+        for i in range(0, len(iterate_order)):
+            current_act = iterate_order[i]
+            for element in new_dfg:
+                if element[0][0] == current_act:
+                    if element[0][1] in iterate_order:
+                        outgoing[i].append(element[0][1])
 
+        # built p2, ..., pn :
+        acts_not_assigned_to_set = deepcopy(iterate_order)
+        p0 = []
+        p = [list() for _ in range(len(iterate_order))]
+        max_set = iterate_order
+        max_set_found = False
+        for i in range(0, len(iterate_order)):
+            act = iterate_order[i]
+            if act in acts_not_assigned_to_set:
+                p[i] = [act]
+                acts_not_assigned_to_set.remove(act)
+                added = True
+                while added:
+                    added = False
+                    # check if max set is already found
+                    count = 0
+                    for li in p:
+                        if len(li) != 0:
+                            count += 1
+                    if count == len(max_set):
+                        max_set_found = True
+                        break
+                    # if max set is not found, continue adding acts
+                    for act_b in p[i]:
+                        index_of_act_b_in_outgoing = self.get_index_of_x_in_list(act_b, iterate_order)
+                        for outgoing_act in outgoing[index_of_act_b_in_outgoing]:
+                            if outgoing_act in acts_not_assigned_to_set:
+                                acts_not_assigned_to_set.remove(outgoing_act)
+                                p[i].append(outgoing_act)
+                                added = True
+                                break
+                        if added:
+                            break
+            if max_set_found:
+                break
+
+        for li in p:
+            if len(li) == 0:
+                p.remove(li)
+
+        # p0 = get_connected_components(new_ingoing, new_outgoing, current_activities)
+        p.insert(0, p1)
+        p0 = p
         iterable_dfg = []
         for i in range(0, len(self.dfg)):
             iterable_dfg.append(self.dfg[i][0])
         # p0 is like P1,P2,...,Pn in line 3 on page 190 of the IM Thesis
         # check for subsets in p0 that have connections to and end or from a start activity
-        p0_copy = deepcopy(p0)            # we use the bool removed to exit the nested loops once we removed an element
-        for element in p0_copy:                             # for every set in p0
+        p0_copy = deepcopy(p0)  # we use the bool removed to exit the nested loops once we removed an element
+        for element in p0_copy:  # for every set in p0
             removed = False
             if element in p0 and element != p0[0]:
-                for act in element:                             # for every activity in this set
-                    for e in end_activities:               # for every end activity
-                        if (act, e) in iterable_dfg:      # check if connected
+                for act in element:  # for every activity in this set
+                    for e in end_activities:  # for every end activity
+                        if (act, e) in iterable_dfg:  # check if connected
                             # is there an element in dfg pointing from any act in a subset of p0 to an end activity
                             for activ in element:
                                 if activ not in p0[0]:
                                     p0[0].append(activ)
-                            p0.remove(element)              # remove subsets that are connected to an end activity
+                            p0.remove(element)  # remove subsets that are connected to an end activity
                             removed = True
                             break
                     if removed:
@@ -434,32 +495,40 @@ class SubtreeInfrequent(object):
                             break
                     if removed:
                         break
-
+        iterable_dfg = list()
         for i in range(0, len(self.dfg)):
             iterable_dfg.append(self.dfg[i][0])
 
         for element in p0:
             if element in p0 and element != p0[0]:
                 for act in element:
-                    for e in self.end_activities:
+                    for e in end_activities:
                         if (e, act) in iterable_dfg:  # get those act, that are connected from an end activity
-                            for e2 in self.end_activities:  # check, if the act is connected from all end activities
+                            for e2 in end_activities:  # check, if the act is connected from all end activities
                                 if (e2, act) not in iterable_dfg:
                                     for acti in element:
                                         if acti not in p0[0]:
                                             p0[0].append(acti)
-                                    p0.remove(element)              # remove subsets that are connected to an end activity
+                                    if element in p0:
+                                        p0.remove(element)  # remove subsets that are connected to an end activity
                                     break
-                    for s in self.start_activities:
+                    for s in start_activities:
                         if (act, s) in iterable_dfg:  # same as above (in this case for activities connected to
                             # a start activity)
-                            for s2 in self.start_activities:
+                            for s2 in start_activities:
                                 if (act, s2) not in iterable_dfg:
                                     for acti in element:
                                         if acti not in p0[0]:
                                             p0[0].append(acti)
-                                    p0.remove(element)              # remove subsets that are connected to an end activity
+                                    if element in p0:
+                                        p0.remove(element)  # remove subsets that are connected to an end activity
                                     break
+        index_to_delete = []
+        for i in range(0, len(p0)):
+            if not p0[i]:
+                index_to_delete.insert(0, i)
+        for index in index_to_delete:
+            p0.remove(p0[index])
         if len(p0) > 1:
             return [True, p0]
         else:
